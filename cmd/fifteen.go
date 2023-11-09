@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -11,7 +10,7 @@ import (
 )
 
 // 2015Cmd represents the 2015 command
-var fifteenCmd = &cobra.Command{
+var FifteenCmd = &cobra.Command{
 	Use:   "2015",
 	Short: "Top Level Command for AoC 2015",
 
@@ -21,7 +20,7 @@ var fifteenCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(fifteenCmd)
+	rootCmd.AddCommand(FifteenCmd)
 
 	// Here you will define your flags and configuration settings.
 

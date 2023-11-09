@@ -3,6 +3,7 @@ package util
 import (
 	"math"
 	"os"
+	"strings"
 )
 
 func ReadFile(year string, day string, test bool) string {
@@ -16,8 +17,9 @@ func ReadFile(year string, day string, test bool) string {
 	data, err := os.ReadFile(path)
 		
 	CheckErr(err)
+	strContent := string(data)
+	return strings.TrimRight(strContent, "\n")
 
-	return string(data)
 }
 
 func CheckErr(e error) {
