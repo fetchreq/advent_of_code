@@ -15,7 +15,7 @@ import (
 // day3Cmd represents the day3 command
 var day3Cmd = &cobra.Command{
 	Use:   "day3",
-	Short: "Aoc 2015 Day 3", 
+	Short: "Aoc 2015 Day 3",
 	Run: func(cmd *cobra.Command, args []string) {
 		input := util.ReadFile("2015", "day3", false)
 		fmt.Printf("Part 1: %d\n", day3Part1(input))

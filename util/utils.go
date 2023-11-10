@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+// Reads a file from the input directory
+// The year is the sub year folder
+// day is the input for the day
+// test is if we should use test file or real input
 func ReadFile(year string, day string, test bool) string {
 	path := "./input/" + year + "/" + day
 	if test {
@@ -38,6 +42,17 @@ func Min(args ...int) int {
 		}
 	}
 	return min
+}
+
+func Max(args ...int) int {
+	max := args[0]
+
+	for _, val := range args {
+		if val > max {
+			max = val
+		}
+	}
+	return max
 }
 
 func Min2(args ...int) (int, int){
