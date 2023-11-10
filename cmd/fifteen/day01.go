@@ -17,7 +17,7 @@ var day1Cmd = &cobra.Command{
 	Short: "Aoc 2015 Day 1",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		input := util.ReadFile("2015", "day1", false);
+		input := util.ReadFile("2015", "1", false);
 		fmt.Printf("Part One: %d\n", part1(input));
 		fmt.Printf("Part Two: %d\n", part2(input));
 	},
