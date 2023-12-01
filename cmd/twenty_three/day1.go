@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"unicode"
 
+	"github.com/rjprice04/advent_of_code/cast"
 	"github.com/rjprice04/advent_of_code/cmd"
 	"github.com/rjprice04/advent_of_code/util"
 	"github.com/spf13/cobra"
@@ -31,11 +33,7 @@ func init() {
 func day1Part1(input string) int {
 	sum := 0
 	for _, row := range strings.Split(input, "\n") {
-		first := getFirstNumberInString(row)
-		last := getFirstNumberInString(reverseString(row))
-		val, _:= strconv.Atoi(fmt.Sprintf("%s%s", first, last))
-
-		sum += val
+		sum += getFirstNumberInString(row) * 10 + getFirstNumberInString(reverseString(row))
 	}
 	return sum
 }
@@ -44,65 +42,69 @@ func checkCharIsNumber(c byte) bool {
 	return '0' <= c && c <= '9'
 }
 
-
 func day1Part2(input string) int {
 	sum := 0
 
 	numberStrings:= [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
-	for _, line := range strings.Split(input, "\n"){
-		numBytes := make([]byte, 2)
+	for _, row := range strings.Split(input, "\n"){
 		found := false
-		for i := 0; i < len(line); i++ { // Check from start of line
-			// Check for numeric value
-			if checkCharIsNumber(line[i]) {
-				numBytes[0] = line[i]
+		var first int
+		// from beginning of the word
+		for i, letter := range row {
+			if unicode.IsDigit(letter) {
+				first = cast.ToInt(string(letter))
 				found = true
 			}
-			// Check for number as string
-			for numCheck, strCheck := range numberStrings {
-				if line[i:util.Min(i+len(strCheck), len(line))] == strCheck {
-					numBytes[0] = fmt.Sprint(numCheck + 1)[0]
+			for index, num := range numberStrings {
+				if row[i:util.Min(i+len(num), len(row))] == num {
+					first = index + 1
 					found = true
 				}
 			}
-			if found { // Exit loop if number is found
+
+			if found {
 				break
 			}
 		}
+
+		var last int
 		found = false
-		for j := len(line) - 1; j >= 0; j-- { // Check from end of line
-			// Check for numeric value
-			if checkCharIsNumber(line[j]) {
-				numBytes[1] = line[j]
+		// from the end of the word
+		for j := len(row) - 1; j >= 0; j-- { 
+			// current is a number
+			if '0' <= row[j] && row[j] <= '9' {
+				last = cast.ToInt(string(row[j]))	
 				found = true
 			}
-			// Check for number as string
-			for numCheck, strCheck := range numberStrings {
-				if line[j:util.Min(j+len(strCheck), len(line))] == strCheck {
-					numBytes[1] = fmt.Sprint(numCheck + 1)[0]
+
+			// check for string number
+			for index, num := range numberStrings {
+				if row[j:util.Min(j+len(num), len(row))] == num {
+					last = index + 1
 					found = true
 				}
 			}
-			if found { // Exit loop if number is found
+
+			if found {
 				break
 			}
 		}
-		num, _ := strconv.Atoi(string(numBytes))
+		num := first * 10 + last
 		sum += num
 	}
 
 	return sum
 }
 
-func getFirstNumberInString(input string) string {
+func getFirstNumberInString(input string) int {
 	for _, i := range strings.Split(input, "") {
 
 		if _, err := strconv.Atoi(i); err == nil {
-			return i
+			return cast.ToInt(i)
 		}
 	}
 
-	return ""
+	return 0
 }
 
 func reverseString(input string) string {
