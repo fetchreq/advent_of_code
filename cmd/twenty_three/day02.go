@@ -5,6 +5,7 @@ package twentythree
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/rjprice04/advent_of_code/cast"
@@ -26,51 +27,40 @@ var day02Cmd = &cobra.Command{
 
 func init() {
 	cmd.TwentyThreeCmd.AddCommand(day02Cmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// day02Cmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// day02Cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
+
+const (
+	RedMax = 12
+	GreenMax = 13
+	BlueMax = 14
+)
 
 func day2Part1(input string) int {
 	sum := 0
-	for _, row := range strings.Split(input, "\n") {
-		parts := strings.Split(row, ":")
-		var gameIdStr string
-		fmt.Sscanf(parts[0], "Game %s:", &gameIdStr)
-		gameId := cast.ToInt(gameIdStr)
+	for gameId, row := range strings.Split(input, "\n") {
 		validGame := true
-
-		for _, set := range strings.Split(parts[1], ";") {
-			for _, marble := range strings.Split(set, ",") {
-				marble = strings.TrimSpace(marble)
-				var color, amountStr string
-				fmt.Sscanf(marble, "%s %s", &amountStr, &color)
-				amount := cast.ToInt(amountStr)
-				if color == "blue" && amount > 14 {
-					validGame = false
-
-				} else if color == "green" && amount > 13 {
-					validGame = false
-
-				} else if color == "red" && amount > 12 {
-					validGame = false
-
-				}
+		red := regexp.MustCompile(`(\d+) red`)
+		for _, match := range red.FindAllStringSubmatch(row, -1){
+			if cast.ToInt(match[1]) > RedMax {
+				validGame = false
 			}
-
+		}
+		green := regexp.MustCompile(`(\d+) green`)
+		for _, match := range green.FindAllStringSubmatch(row, -1){
+			if cast.ToInt(match[1]) > GreenMax {
+				validGame = false
+			}
 		}
 
+		blue := regexp.MustCompile(`(\d+) blue`)
+		for _, match := range blue.FindAllStringSubmatch(row, -1){
+			if cast.ToInt(match[1]) > BlueMax {
+				validGame = false
+			}
+		}
 		if validGame {
-			sum += gameId
+			sum +=  gameId + 1
 		}
-		
 	}
 	return sum
 }
@@ -78,28 +68,23 @@ func day2Part1(input string) int {
 func day2Part2(input string) int {
 	sum := 0
 	for _, row := range strings.Split(input, "\n") {
-		parts := strings.Split(row, ":")
 		maxRed := 0
 		maxGreen := 0
 		maxBlue := 0
-		for _, set:= range strings.Split(parts[1], ";") {
-			for _, marble := range strings.Split(set, ",") {
-				marble = strings.TrimSpace(marble)
-				var color, amountStr string
-				fmt.Sscanf(marble, "%s %s", &amountStr, &color)
-				amount := cast.ToInt(amountStr)
-				if color == "blue" {
-					maxBlue = util.Max(maxBlue, amount)
-
-				} else if color == "green" {
-					maxGreen = util.Max(maxGreen, amount)
-
-				} else if color == "red" {
-					maxRed = util.Max(maxRed, amount)
-				}
-			}
-
+		red := regexp.MustCompile(`(\d+) red`)
+		for _, match := range red.FindAllStringSubmatch(row, -1){
+			maxRed = util.Max(cast.ToInt(match[1]), maxRed) 
 		}
+		green := regexp.MustCompile(`(\d+) green`)
+		for _, match := range green.FindAllStringSubmatch(row, -1){
+			maxGreen = util.Max(cast.ToInt(match[1]), maxGreen) 
+		}
+
+		blue := regexp.MustCompile(`(\d+) blue`)
+		for _, match := range blue.FindAllStringSubmatch(row, -1){
+			maxBlue = util.Max(cast.ToInt(match[1]), maxBlue) 
+		}
+
 
 		sum += (maxRed * maxGreen * maxBlue)
 	}
