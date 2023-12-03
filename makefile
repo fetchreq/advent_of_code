@@ -9,6 +9,9 @@ build:
 new-year:
 	@echo "Creating Year"
 	@cobra-cli add 20$(YEAR)
+	@mkdir cmd/20$(YEAR)
+	@mkdir input/20$(YEAR)
+	@touch input/20$(YEAR)/.keep
 
 new-day:
 	@cobra-cli add day$(DAY) -p 20$(YEAR)
