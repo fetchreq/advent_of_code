@@ -67,7 +67,7 @@ func getProblemInput(year, day string) []byte {
 
 // Creates a file ./input/YEAR/dayXX.txt with the input bytes 
 func createFileWithData(year, day string, data []byte) int {
-	path := "./input/" + year + "/day" + day
+	path := "./input/" + year + "/day" + day + ".txt"
 
 	fmt.Println("Creating File..." )
 	file, err := os.Create(path)
