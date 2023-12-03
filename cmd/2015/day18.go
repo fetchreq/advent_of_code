@@ -79,8 +79,6 @@ func day18Part2(input string) int {
 	grid[len(grid) - 1][len(grid) - 1] = "#"
 
 	for loop := 0; loop < 100; loop++ {
-
-
 		grid = next(grid)
 		grid[0][0] = "#"
 		grid[0][len(grid) - 1] = "#"

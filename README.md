@@ -1,8 +1,8 @@
 # Advent of Code
 
 ## Getting stared
-First intall [Go](https://go.dev/doc/install), if you don't have it already
-Then Create a `.env` file `cp .env.example .env` and add your session token from the AoC website as the value. You should be able to see it in the network requests in dev tools
+First intall [Go](https://go.dev/doc/install), if you don't have it already.
+Then create a `.env` file `cp .env.example .env` and add your session token from the AoC website as the value. You should be able to see it in the network requests in dev tools
 
 Running a days problems 
 
@@ -32,7 +32,7 @@ To create new commands you will need the [cobra-cli tool](https://github.com/spf
 1. Adding new day command 
 `cobra-cli add-command dayXX -p YEAR`
 
-2. Move it to the corret year dirctory 
+2. Move it to the correct year dirctory 
 `mv cmd/dayXX.go cmd/YEAR/dayXX.go
 
 
