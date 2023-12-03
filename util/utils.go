@@ -27,7 +27,8 @@ func ReadFile(year string, day string, test bool) string {
 	
 	// if we get an error make a request to get the data from AoC site
 	if err != nil {
-		fmt.Println("Input file not found downloading from AoC website" )
+		fmt.Println("Input file Not Found")
+		fmt.Println("Downloading..." )
 		// probably need to download the file
 		viper.SetConfigFile(".env")
 		err := viper.ReadInConfig()
@@ -48,6 +49,7 @@ func ReadFile(year string, day string, test bool) string {
 		resBody, err := io.ReadAll(res.Body)
 		CheckErr(err)
 		
+		fmt.Println("Creating File..." )
 		file, err := os.Create(path)
 		CheckErr(err)
 		defer file.Close()
@@ -59,7 +61,7 @@ func ReadFile(year string, day string, test bool) string {
 
 
 	} else {
-		fmt.Println("Using local input file")
+		fmt.Println("Using Local File")
 	}
 	strContent := string(data)
 	return strings.TrimRight(strContent, "\n")
