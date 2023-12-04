@@ -78,44 +78,22 @@ func day3Part2(input string) int{
 	sum := 0
 	for row := 0; row < len(matrix); row++ {
 		for col := 0; col < len(matrix[0]); col++ {
-
+		
 			if matrix[row][col] == "*" {
+
 				numSet := make(map[int]bool)
-				if r.MatchString(matrix[row-1][col-1]) {
-					numSet[getNum(row - 1, col - 1, matrix)] = true
-				}
+				for i := -1; i <= 1; i++ {
+					for j := -1; j <= 1; j++ {
+						if r.MatchString(matrix[row+i][col+j]) {
+							numSet[getNum(row + i, col + j, matrix)] = true
+						}
 
-				if r.MatchString(matrix[row-1][col]) {
-					numSet[getNum(row - 1, col, matrix)] = true
-				}
-
-				if r.MatchString(matrix[row-1][col+1]) {
-					numSet[getNum(row - 1, col + 1, matrix)] = true
-				}
-
-				if r.MatchString(matrix[row][col-1]) {
-					numSet[getNum(row, col - 1, matrix)] = true
-				}
-
-				if r.MatchString(matrix[row][col+1]) {
-					numSet[getNum(row, col + 1, matrix)] = true
-				}
-
-				if r.MatchString(matrix[row+1][col-1]) {
-					numSet[getNum(row+1, col-1, matrix)] = true
-				}
-
-				if r.MatchString(matrix[row+1][col]) {
-					numSet[getNum(row + 1, col, matrix)] = true
-				}
-
-				if r.MatchString(matrix[row+1][col+1]) {
-					numSet[getNum(row + 1, col + 1, matrix)] = true
+					}
 				}
 
 				if len(numSet) == 2 {
 					running := 1
-					for key, _ := range numSet {
+					for key := range numSet {
 						running *= key
 					}
 
