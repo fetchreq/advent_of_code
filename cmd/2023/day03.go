@@ -45,17 +45,20 @@ func day3Part1(input string) int{
 	sum := 0
 	for i := 0; i < len(matrix); i++ {
 		for j := 0; j < len(matrix[0]); j++ {
-			var num string
+			var num strings.Builder
 
 			if r.MatchString(matrix[i][j]) {
 				k := j;
+				// get all the digits of the number
 				for k < len(matrix[i]) && r.MatchString(matrix[i][k]) {
-					num = fmt.Sprintf("%s%s",num, matrix[i][k])
+					num.WriteString(matrix[i][k])
 					k++
 				}
-				if checkNeighbors(i, j, len(num), len(matrix) -1, len(matrix[0]) - 1, matrix) {
-					sum += cast.ToInt(num)
-				} 				
+
+				if checkNeighborsForSymbol(i, j, num.Len(), len(matrix) - 1, len(matrix[0]) - 1, matrix) {
+					sum += cast.ToInt(num.String())
+				}
+				// skip the rest of the digits since they have all been checked
 				j = k
 
 			}
@@ -139,8 +142,8 @@ func getNum(row, col int,  matrix [][]string) int {
 	return cast.ToInt(num.String())
 }
 
-
-func checkNeighbors(row, col, numLength, numRows, numCols int, matrix [][]string) bool {
+// Starts at the first col that is a number in the matrix and checks all neighbors for lenght of the number 
+func checkNeighborsForSymbol(row, col, numLength, numRows, numCols int, matrix [][]string) bool {
 	r := regexp.MustCompile(`\d`)
 	if row == 0 {
 		for k := util.Max(col - 1, 0); k < util.Min(numCols, col + numLength + 1); k++ {
