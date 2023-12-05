@@ -28,8 +28,8 @@ func ReadFile(year, day string, test bool) string {
 	// if we get an error make a request to get the data from AoC site
 	if err != nil {
 		fmt.Println("Input file Not Found")
-		input := getProblemInput(year, day)
-		bytesWritten := createFileWithData(year, day, input)
+		data = getProblemInput(year, day)
+		bytesWritten := createFileWithData(year, day, data)
 		fmt.Printf("Wrote %d bytes\n", bytesWritten)
 
 	} else {
@@ -76,7 +76,6 @@ func createFileWithData(year, day string, data []byte) int {
 
 	num, err := file.Write(data)
 	CheckErr(err)
-	fmt.Printf("Wrote %d bytes\n", num)
 	
 	return num
 
