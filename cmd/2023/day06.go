@@ -9,7 +9,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
 	"github.com/rjprice04/advent_of_code/cmd"
 	"github.com/rjprice04/advent_of_code/util"
 	"github.com/spf13/cobra"
@@ -76,42 +75,37 @@ func day6Part2(input string) int {
 
 	minHold := math.Floor((b - part) / 2);
 	maxHold := math.Floor((b + part) / 2);
-	// for i := 1; i < race.time; i++ {
-	// 	speed := i;
-	// 	timeLeft := race.time - i;
-	// 	totalDistance := speed * timeLeft
-	// 	if totalDistance > race.distance {
-	// 		winCount++
-	// 	}
-	// }
-	//
 
 	return int(maxHold-minHold);
 }
+
 func getBoatRaces(input string) []boatRace {
 	boatRaces := []boatRace{}
-	times := []int{}
-	distances := []int{}
-	for idx, row := range strings.Split(input, "\n") {
-		for  _, val := range strings.Split(row, " ") {
-			if strings.TrimSpace(val) == "" {
-				continue
-			}
-			if idx == 0 {
-				if num, err := strconv.Atoi(val); err == nil {
-					times = append(times, num)
-				}
+	times := []float64{}
+	distances := []float64{}
+	for _, row := range strings.Split(input, "\n") {
+		// Check if we are on the time row
+		isTime := strings.HasPrefix(row, "Time: ")
+		if isTime {
+			row = strings.TrimPrefix(row, "Time: ")
+		} else {
+			row = strings.TrimPrefix(row, "Distance: ")
+		}
+		// Get all the numbers
+		for  _, val := range strings.Fields(row) {
+			if isTime {
+				num, _ := strconv.ParseFloat(val, 64)
+				times = append(times, num)
 			} else {
-				if val, err := strconv.Atoi(val); err == nil {
-					distances = append(distances, val)
-				}
+				num, _ := strconv.ParseFloat(val, 64)
+				distances = append(distances, num)
 			}
 
 		}
 	}
 
 	for idx, time := range times {
-		boatRaces = append(boatRaces, boatRace{time: float64(time), distance: float64(distances[idx])})
+		boatRaces = append(boatRaces, boatRace{time: time, distance: distances[idx]})
 	}
 
 	return boatRaces
@@ -120,26 +114,22 @@ func getBoatRaces(input string) []boatRace {
 
 func getBoatRace(input string) boatRace {
 
-	time := ""
-	distance := ""
-	for idx, row := range strings.Split(input, "\n") {
-		for  _, val := range strings.Split(row, " ") {
-			if strings.TrimSpace(val) == "" {
-				continue
-			}
-			if idx == 0 {
-				if _, err := strconv.Atoi(val); err == nil {
-					time += val
-				}
-			} else {
-				if _, err := strconv.Atoi(val); err == nil {
-					distance += val
-				}
-			}
+	var time float64
+	var distance float64
 
+	for _, row := range strings.Split(input, "\n") {
+		isTime := strings.HasPrefix(row, "Time: ")
+		if isTime {
+			row = strings.TrimPrefix(row, "Time: ")
+			row = strings.ReplaceAll(row, " ", "")
+			time, _ = strconv.ParseFloat(row, 64)
+		} else {
+			row = strings.TrimPrefix(row, "Distance: ")
+			row = strings.ReplaceAll(row, " ", "")
+			distance, _ = strconv.ParseFloat(row, 64)
 		}
 	}
-	return boatRace{time: float64(cast.ToInt(time)), distance: float64(cast.ToInt(distance))}
+	return boatRace{time: time, distance: distance}
 
 
 }
