@@ -24,7 +24,6 @@ var day06Cmd = &cobra.Command{
 	Use:   "day06",
 	Short: "AoC 2023 Day 6",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("day06 called")
 
 		input := util.ReadFile("2023", "6", false)
 
@@ -47,11 +46,10 @@ func day6Part1(input string) int {
 		a := 1.0
 		b := boatRace.time
 		c := boatRace.distance
-	 
-		part := math.Sqrt(math.Pow(b, 2) - 4 * a * c)
+		sqrtPart := math.Sqrt(math.Pow(b, 2) - 4 * a * c)
 
-		minHold := math.Floor((b - part) / 2);
-		maxHold := math.Floor((b + part) / 2);
+		minHold := math.Floor((b - sqrtPart) / 2);
+		maxHold := math.Floor((b + sqrtPart) / 2);
 
 		winning = append(winning, int(maxHold-minHold))
 	}
@@ -71,41 +69,35 @@ func day6Part2(input string) int {
 	b := boatRace.time
 	c := boatRace.distance
 
-	part := math.Sqrt(math.Pow(b, 2) - 4 * a * c)
+	sqrtPart := math.Sqrt(math.Pow(b, 2) - 4 * a * c)
 
-	minHold := math.Floor((b - part) / 2);
-	maxHold := math.Floor((b + part) / 2);
+	minHold := math.Floor((b - sqrtPart) / 2);
+	maxHold := math.Floor((b + sqrtPart) / 2);
 
 	return int(maxHold-minHold);
 }
 
 func getBoatRaces(input string) []boatRace {
 	boatRaces := []boatRace{}
-	times := []float64{}
-	distances := []float64{}
-	for _, row := range strings.Split(input, "\n") {
-		// Check if we are on the time row
-		isTime := strings.HasPrefix(row, "Time: ")
-		if isTime {
-			row = strings.TrimPrefix(row, "Time: ")
-		} else {
-			row = strings.TrimPrefix(row, "Distance: ")
-		}
-		// Get all the numbers
-		for  _, val := range strings.Fields(row) {
-			if isTime {
-				num, _ := strconv.ParseFloat(val, 64)
-				times = append(times, num)
-			} else {
-				num, _ := strconv.ParseFloat(val, 64)
-				distances = append(distances, num)
-			}
+	rows := strings.Split(input, "\n")
 
-		}
-	}
+	
+	distanceRow := strings.TrimPrefix(rows[1], "Distance: ")
+	// Get a list of distance values 
+	distanceFields := strings.Fields(distanceRow)
 
-	for idx, time := range times {
-		boatRaces = append(boatRaces, boatRace{time: time, distance: distances[idx]})
+	timeRow := strings.TrimPrefix(rows[0], "Time: ")
+	for idx, val := range strings.Fields(timeRow) {
+		time, err := strconv.ParseFloat(val, 64)
+		if err != nil {
+			panic(fmt.Sprintf("Could not parse %s to float", timeRow))
+		}
+		
+		distance, err := strconv.ParseFloat(distanceFields[idx], 64)
+		if err != nil {
+			panic(fmt.Sprintf("Could not parse %s to float", timeRow))
+		}
+		boatRaces = append(boatRaces, boatRace{time: time, distance: distance})
 	}
 
 	return boatRaces
@@ -114,21 +106,22 @@ func getBoatRaces(input string) []boatRace {
 
 func getBoatRace(input string) boatRace {
 
-	var time float64
-	var distance float64
+	rows := strings.Split(input, "\n")
 
-	for _, row := range strings.Split(input, "\n") {
-		isTime := strings.HasPrefix(row, "Time: ")
-		if isTime {
-			row = strings.TrimPrefix(row, "Time: ")
-			row = strings.ReplaceAll(row, " ", "")
-			time, _ = strconv.ParseFloat(row, 64)
-		} else {
-			row = strings.TrimPrefix(row, "Distance: ")
-			row = strings.ReplaceAll(row, " ", "")
-			distance, _ = strconv.ParseFloat(row, 64)
-		}
+	timeRow := strings.TrimPrefix(rows[0], "Time: ")
+	timeRow = strings.ReplaceAll(timeRow, " ", "")
+	time, err := strconv.ParseFloat(timeRow, 64)
+	if err != nil {
+		panic(fmt.Sprintf("Could not parse %s to float", timeRow))
 	}
+
+	distanceRow := strings.TrimPrefix(rows[1], "Distance: ")
+	distanceRow = strings.ReplaceAll(distanceRow, " ", "")
+	distance, err := strconv.ParseFloat(distanceRow, 64)
+	if err != nil {
+		panic(fmt.Sprintf("Could not parse %s to float", distanceRow))
+	}
+
 	return boatRace{time: time, distance: distance}
 
 
