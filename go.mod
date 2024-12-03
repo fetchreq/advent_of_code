@@ -1,6 +1,6 @@
 module github.com/rjprice04/advent_of_code
 
-go 1.20
+go 1.23
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
