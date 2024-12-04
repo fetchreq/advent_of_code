@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"fmt"
-	"math"
 	"slices"
 	"strings"
 
@@ -18,13 +17,7 @@ import (
 // day1Cmd represents the day1 command
 var day1Cmd = &cobra.Command{
 	Use:   "day1",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Aoc Day 1 2024",
 	Run: func(cmd *cobra.Command, args []string) {
 		input := util.ReadFile("2024", "1", false)
 		fmt.Printf("Day 1 Part 1 = %d\n", day1Part1(input))
@@ -44,11 +37,13 @@ func day1Part1(input string) int {
 		left = append(left, cast.ToInt(parts[0]))
 		right = append(right, cast.ToInt(parts[1]))
 	}
+
 	slices.Sort(left)
 	slices.Sort(right)
+
 	sum := 0
 	for i := 0; i < len(left); i++ {
-		sum += int(math.Abs(float64(left[i] - right[i])))
+		sum += util.AbsDiffInt(left[i], right[i])
 	}
 	return sum
 }
@@ -66,6 +61,7 @@ func day1Part2(input string) int {
 			items[right] = count + 1
 		}
 	}
+
 	sum := 0
 	for _, val := range left {
 		if occ, ok := items[val]; ok {

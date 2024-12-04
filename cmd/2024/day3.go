@@ -16,17 +16,10 @@ import (
 var day3Cmd = &cobra.Command{
 	Use:   "day3",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		input := util.ReadFile("2024", "3", false)
 		fmt.Printf("Day 3 Part 1 %d\n", day3Part1(input))
 		fmt.Printf("Day 3 Part 2 %d\n", day3Part2(input))
-		fmt.Println("day3 called")
 	},
 }
 
@@ -120,7 +113,6 @@ func day3Part2(input string) int {
 		}
 	}
 	return sum
-
 }
 
 func isDigit(ch byte) bool {
