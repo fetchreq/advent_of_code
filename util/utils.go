@@ -24,7 +24,7 @@ func ReadFile(year, day string, test bool) string {
 	}
 
 	data, err := os.ReadFile(path)
-	
+
 	// if we get an error make a request to get the data from AoC site
 	if err != nil {
 		fmt.Println("Input file Not Found")
@@ -41,7 +41,7 @@ func ReadFile(year, day string, test bool) string {
 
 // Downloads the input file from advent of code website
 func getProblemInput(year, day string) []byte {
-	fmt.Println("Downloading..." )
+	fmt.Println("Downloading...")
 
 	viper.SetConfigFile(".env")
 	err := viper.ReadInConfig()
@@ -55,8 +55,7 @@ func getProblemInput(year, day string) []byte {
 	CheckErr(err)
 	req.AddCookie(&http.Cookie{Name: "session", Value: session})
 
-
-	res, err := client.Do(req) 
+	res, err := client.Do(req)
 	CheckErr(err)
 
 	resBody, err := io.ReadAll(res.Body)
@@ -65,28 +64,27 @@ func getProblemInput(year, day string) []byte {
 	return resBody
 }
 
-// Creates a file ./input/YEAR/dayXX.txt with the input bytes 
+// Creates a file ./input/YEAR/dayXX.txt with the input bytes
 func createFileWithData(year, day string, data []byte) int {
 	path := "./input/" + year + "/day" + day + ".txt"
 
-	fmt.Println("Creating File..." )
+	fmt.Println("Creating File...")
 	file, err := os.Create(path)
 	CheckErr(err)
 	defer file.Close()
 
 	num, err := file.Write(data)
 	CheckErr(err)
-	
+
 	return num
 
 }
 
 func CheckErr(e error) {
-	if (e != nil) {
+	if e != nil {
 		panic(e)
 	}
 }
-
 
 func Min(args ...int) int {
 	min := args[0]
@@ -110,7 +108,7 @@ func Max(args ...int) int {
 	return max
 }
 
-func Min2(args ...int) (int, int){
+func Min2(args ...int) (int, int) {
 	min1 := math.MaxInt
 	min2 := math.MaxInt
 
@@ -124,4 +122,13 @@ func Min2(args ...int) (int, int){
 	}
 
 	return min1, min2
+}
+
+// Subtracts two numbers where minuend is greater than the subtrahend
+// ex: AbsDiffInt(8, 6) and AbsDiffInt(6, 8) both run as 8 - 6
+func AbsDiffInt(x, y int) int {
+	if x < y {
+		return y - x
+	}
+	return x - y
 }
