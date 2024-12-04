@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -19,8 +19,8 @@ var day4Cmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		input := "yzbqklnj"
-		fmt.Printf("Part 1: %d", day4Part1(input));
-		fmt.Printf("Part 2: %d", day4Part2(input));
+		fmt.Printf("Part 1: %d", day4Part1(input))
+		fmt.Printf("Part 2: %d", day4Part2(input))
 	},
 }
 
@@ -39,32 +39,31 @@ func init() {
 }
 
 func day4Part1(input string) int {
-	current := 0;
-	prefix := strings.Repeat("0", 5);
+	current := 0
+	prefix := strings.Repeat("0", 5)
 	for {
 		value := fmt.Sprintf("%s%d", input, current)
-		result := fmt.Sprintf("%x", md5.Sum([]byte(value)));
+		result := fmt.Sprintf("%x", md5.Sum([]byte(value)))
 		if strings.HasPrefix(result, prefix) {
 			return current
 
-		} 
+		}
 		current += 1
 
 	}
 }
 
 func day4Part2(input string) int {
-	current := 0;
-	prefix := strings.Repeat("0", 6);
+	current := 0
+	prefix := strings.Repeat("0", 6)
 	for {
 		value := fmt.Sprintf("%s%d", input, current)
-		result := fmt.Sprintf("%x", md5.Sum([]byte(value)));
+		result := fmt.Sprintf("%x", md5.Sum([]byte(value)))
 		if strings.HasPrefix(result, prefix) {
 			return current
 
-		} 
+		}
 		current += 1
 
 	}
 }
-

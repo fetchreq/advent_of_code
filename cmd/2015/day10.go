@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -34,8 +34,8 @@ func day10Part1(input string) int {
 	for loops := 0; loops < 40; loops++ {
 		sb.Reset()
 		// output = ""
-		for i := 0; i < len(input); i ++ {
-			curr := input[i];
+		for i := 0; i < len(input); i++ {
+			curr := input[i]
 			count := 1
 			for j := i + 1; j < len(input); j++ {
 				if input[j] == curr {
@@ -46,12 +46,12 @@ func day10Part1(input string) int {
 
 			}
 
-			i += count - 1;
+			i += count - 1
 			val := fmt.Sprintf("%d%s", count, string(curr))
 			sb.WriteString(val)
 		}
 		//fmt.Printf("%d: %s\n", loops + 1, output)
-	
+
 		input = sb.String()
 	}
 	return len(sb.String())
@@ -62,8 +62,8 @@ func day10Part2(input string) int {
 	for loops := 0; loops < 50; loops++ {
 		sb.Reset()
 		// output = ""
-		for i := 0; i < len(input); i ++ {
-			curr := input[i];
+		for i := 0; i < len(input); i++ {
+			curr := input[i]
 			count := 1
 			for j := i + 1; j < len(input); j++ {
 				if input[j] == curr {
@@ -74,12 +74,12 @@ func day10Part2(input string) int {
 
 			}
 
-			i += count - 1;
+			i += count - 1
 			val := fmt.Sprintf("%d%s", count, string(curr))
 			sb.WriteString(val)
 		}
 		//fmt.Printf("%d: %s\n", loops + 1, output)
-	
+
 		input = sb.String()
 	}
 	return len(sb.String())

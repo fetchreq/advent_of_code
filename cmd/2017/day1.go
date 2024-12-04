@@ -6,9 +6,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -36,12 +36,12 @@ func init() {
 func day1Part1(input string) int {
 	sum := 0
 	for i := 0; i < len(input); i++ {
-		if input[i] == input[i + 1] {
+		if input[i] == input[i+1] {
 			sum += cast.ToInt(string(input[i]))
 		}
 	}
 
-	if input[0] == input[len(input) - 1] {
+	if input[0] == input[len(input)-1] {
 		sum += cast.ToInt(string(input[0]))
 	}
 
@@ -51,15 +51,15 @@ func day1Part1(input string) int {
 func day1Part2(input string) int {
 	sum := 0
 	factor := len(input) / 2
-	for i := 0; i < len(input) - 1; i++ {
-		if i + factor > len(input) {
+	for i := 0; i < len(input)-1; i++ {
+		if i+factor > len(input) {
 		}
-		if input[i] == input[i + 1] {
+		if input[i] == input[i+1] {
 			sum += cast.ToInt(string(input[i]))
 		}
 	}
 
-	if input[0] == input[len(input) - 1] {
+	if input[0] == input[len(input)-1] {
 		sum += cast.ToInt(string(input[0]))
 	}
 

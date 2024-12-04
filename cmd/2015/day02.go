@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -41,12 +41,12 @@ func init() {
 
 type Dim struct {
 	length int
-	width int
+	width  int
 	height int
 }
 
 func newDim(input string) *Dim {
-	vals := strings.Split(input, "x");
+	vals := strings.Split(input, "x")
 
 	l, err := strconv.Atoi(vals[0])
 	util.CheckErr(err)
@@ -68,19 +68,14 @@ func (d *Dim) smallestArea() int {
 }
 
 func (d *Dim) smallestParameter() int {
-	min1, min2 := util.Min2(d.length, d.width, d.height);
+	min1, min2 := util.Min2(d.length, d.width, d.height)
 
-	return 2 * min1 + 2 * min2;
+	return 2*min1 + 2*min2
 }
 
 func (d *Dim) cubicVolume() int {
-	return d.length * d.width * d.height;
+	return d.length * d.width * d.height
 }
-
-
-
-
-
 
 func day2Part1(input string) int {
 	dims := strings.Split(input, "\n")

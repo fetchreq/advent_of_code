@@ -8,9 +8,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -47,23 +47,24 @@ func init() {
 }
 
 type hand struct {
-	cards string
-	bid int
+	cards    string
+	bid      int
 	handType string
 }
+
 var cardVals map[string]int = map[string]int{
 	"A": 13,
 	"K": 12,
-	"Q": 11, 
-	"J": 10, 
-	"T": 9, 
-	"9": 8, 
-	"8": 7, 
-	"7": 6, 
-	"6": 5, 
-	"5": 4, 
-	"4": 3, 
-	"3": 2, 
+	"Q": 11,
+	"J": 10,
+	"T": 9,
+	"9": 8,
+	"8": 7,
+	"7": 6,
+	"6": 5,
+	"5": 4,
+	"4": 3,
+	"3": 2,
 	"2": 1,
 }
 
@@ -85,23 +86,23 @@ var cardOrder []string = []string{
 var cardValsUpdated map[string]int = map[string]int{
 	"A": 13,
 	"K": 12,
-	"Q": 11, 
-	"T": 10, 
-	"9": 9, 
-	"8": 8, 
-	"7": 7, 
-	"6": 6, 
-	"5": 5, 
-	"4": 4, 
-	"3": 3, 
+	"Q": 11,
+	"T": 10,
+	"9": 9,
+	"8": 8,
+	"7": 7,
+	"6": 6,
+	"5": 5,
+	"4": 4,
+	"3": 3,
 	"2": 2,
-	"J": 1, 
+	"J": 1,
 }
 
 var handOrders []string = []string{"highCard", "onePair", "twoPair", "threeOfKind", "fullHouse", "fourOfKind", "fiveOfKind"}
 
 func day7Part1(input string) int {
-	winnings := 0;
+	winnings := 0
 	handMap := make(map[string][]hand)
 
 	for _, row := range strings.Split(input, "\n") {
@@ -110,7 +111,7 @@ func day7Part1(input string) int {
 		bid := cast.ToInt(rowFields[1])
 		cards := rowFields[0]
 		handType := getHandTypeFromCards(cards)
-		
+
 		if _, ok := handMap[handType]; !ok {
 			handMap[handType] = []hand{}
 		}
@@ -118,7 +119,7 @@ func day7Part1(input string) int {
 	}
 
 	rank := 1
-	for _,handOrder := range handOrders {
+	for _, handOrder := range handOrders {
 		vals, _ := handMap[handOrder]
 
 		sort.SliceStable(vals, func(i, j int) bool {
@@ -132,7 +133,6 @@ func day7Part1(input string) int {
 			return cardVals[currCards[k]] < cardVals[nextCards[k]]
 		})
 
-
 		//fmt.Printf("Looking at %s with hands %v\n", handOrder, vals)
 		for _, hand := range vals {
 			winnings += (hand.bid * rank)
@@ -145,7 +145,7 @@ func day7Part1(input string) int {
 }
 
 func day7Part2(input string) int {
-	winnings := 0;
+	winnings := 0
 	handMap := make(map[string][]hand)
 	rank := 1
 	for _, row := range strings.Split(input, "\n") {
@@ -154,13 +154,13 @@ func day7Part2(input string) int {
 		bid := cast.ToInt(rowFields[1])
 		cards := rowFields[0]
 		handType := getHandTypeFromCardWithUpgrades(cards)
-		
+
 		if _, ok := handMap[handType]; !ok {
 			handMap[handType] = []hand{}
 		}
 		handMap[handType] = append(handMap[handType], hand{cards: cards, bid: bid})
 	}
-	for _,handOrder := range handOrders {
+	for _, handOrder := range handOrders {
 		vals, _ := handMap[handOrder]
 
 		sort.SliceStable(vals, func(i, j int) bool {
@@ -173,7 +173,6 @@ func day7Part2(input string) int {
 
 			return cardValsUpdated[currCards[k]] < cardValsUpdated[nextCards[k]]
 		})
-
 
 		for _, hand := range vals {
 			winnings += (hand.bid * rank)
@@ -209,13 +208,13 @@ func getHandTypeFromCardWithUpgrades(hand string) string {
 		}
 	}
 
-	jokerCount := cardCount[len(cardCount) - 1]
+	jokerCount := cardCount[len(cardCount)-1]
 	if jokerCount == 5 || jokerCount == 4 {
 		return "fiveOfKind"
 	}
 
 	handType := getHandType(cardCount[:len(cardCount)-1])
-	
+
 	if jokerCount > 0 {
 		handType = upgradeHand(hand, handType, jokerCount)
 	}
@@ -228,13 +227,13 @@ func upgradeHand(inputHand, currHand string, jokerCount int) string {
 		"fourOfKind_1":  "fiveOfKind",
 		"threeOfKind_2": "fiveOfKind",
 		"threeOfKind_1": "fourOfKind",
-		"onePair_3":	 "fiveOfKind",
-		"onePair_2":	 "fourOfKind",
-		"onePair_1":	 "threeOfKind",
-		"highCard_3":	 "fourOfKind",
-		"highCard_2":	 "threeOfKind",
-		"highCard_1":	 "onePair",
-		"twoPair_1":	 "fullHouse",
+		"onePair_3":     "fiveOfKind",
+		"onePair_2":     "fourOfKind",
+		"onePair_1":     "threeOfKind",
+		"highCard_3":    "fourOfKind",
+		"highCard_2":    "threeOfKind",
+		"highCard_1":    "onePair",
+		"twoPair_1":     "fullHouse",
 	}
 
 	newHand, ok := upgrades[fmt.Sprintf("%s_%d", currHand, jokerCount)]
@@ -242,7 +241,7 @@ func upgradeHand(inputHand, currHand string, jokerCount int) string {
 		fmt.Printf("%s upgrade not found for handtype %s with %d jokers\n", inputHand, currHand, jokerCount)
 		return currHand
 	}
-	
+
 	return newHand
 
 }
@@ -258,7 +257,7 @@ func getHandType(cardCount []int) string {
 			handType = "fiveOfKind"
 		} else if cardCount[i] == 4 {
 			handType = "fourOfKind"
-		} 
+		}
 
 		if cardCount[i] == 3 {
 			for j := i; j < len(cardCount); j++ {
@@ -276,7 +275,7 @@ func getHandType(cardCount []int) string {
 			}
 
 		} else if cardCount[i] == 2 {
-			for j := i+1; j < len(cardCount); j++ {
+			for j := i + 1; j < len(cardCount); j++ {
 				if cardCount[j] == 0 {
 					continue
 				}
@@ -294,7 +293,7 @@ func getHandType(cardCount []int) string {
 			}
 		}
 
-	}	
+	}
 	return handType
 }
 

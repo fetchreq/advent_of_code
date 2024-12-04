@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -33,8 +33,9 @@ to quickly create a Cobra application.`,
 func init() {
 	cmd.TwentyThreeCmd.AddCommand(day08Cmd)
 }
+
 type nodePair struct {
-	left string
+	left  string
 	right string
 }
 
@@ -48,11 +49,11 @@ func day8Part1(input string) int {
 		row = strings.ReplaceAll(row, ")", "")
 		row = strings.ReplaceAll(row, "(", "")
 		fmt.Sscanf(row, "%s = %s %s", &nodeId, &leftNode, &rightNode)
-		nodeMap[nodeId] =  nodePair{left: leftNode, right: rightNode}
+		nodeMap[nodeId] = nodePair{left: leftNode, right: rightNode}
 	}
 
-	atEnd := func (input string) bool {
-		return input == "ZZZ"	
+	atEnd := func(input string) bool {
+		return input == "ZZZ"
 	}
 
 	return solve("AAA", path, atEnd, nodeMap)
@@ -96,13 +97,13 @@ func day8Part2(input string) int {
 		row = strings.ReplaceAll(row, ")", "")
 		row = strings.ReplaceAll(row, "(", "")
 		fmt.Sscanf(row, "%s = %s %s", &nodeId, &leftNode, &rightNode)
-		if strings.HasSuffix(nodeId, "A") { 
+		if strings.HasSuffix(nodeId, "A") {
 			nodes = append(nodes, nodeId)
 		}
-		nodeMap[nodeId] =  nodePair{left: leftNode, right: rightNode}
+		nodeMap[nodeId] = nodePair{left: leftNode, right: rightNode}
 	}
 	stepCounts := []int{}
-	atEnd := func (input string) bool  {
+	atEnd := func(input string) bool {
 		return strings.HasSuffix(input, "Z")
 	}
 	for _, currNode := range nodes {

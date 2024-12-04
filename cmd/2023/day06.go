@@ -9,13 +9,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
 type boatRace struct {
-	time float64
+	time     float64
 	distance float64
 }
 
@@ -46,10 +46,10 @@ func day6Part1(input string) int {
 		a := 1.0
 		b := boatRace.time
 		c := boatRace.distance
-		sqrtPart := math.Sqrt(math.Pow(b, 2) - 4 * a * c)
+		sqrtPart := math.Sqrt(math.Pow(b, 2) - 4*a*c)
 
-		minHold := math.Floor((b - sqrtPart) / 2);
-		maxHold := math.Floor((b + sqrtPart) / 2);
+		minHold := math.Floor((b - sqrtPart) / 2)
+		maxHold := math.Floor((b + sqrtPart) / 2)
 
 		winning = append(winning, int(maxHold-minHold))
 	}
@@ -59,31 +59,30 @@ func day6Part1(input string) int {
 		product *= winCount
 	}
 
-	return product;
+	return product
 }
 
 func day6Part2(input string) int {
 	boatRace := getBoatRace(input)
-	
+
 	a := 1.0
 	b := boatRace.time
 	c := boatRace.distance
 
-	sqrtPart := math.Sqrt(math.Pow(b, 2) - 4 * a * c)
+	sqrtPart := math.Sqrt(math.Pow(b, 2) - 4*a*c)
 
-	minHold := math.Floor((b - sqrtPart) / 2);
-	maxHold := math.Floor((b + sqrtPart) / 2);
+	minHold := math.Floor((b - sqrtPart) / 2)
+	maxHold := math.Floor((b + sqrtPart) / 2)
 
-	return int(maxHold-minHold);
+	return int(maxHold - minHold)
 }
 
 func getBoatRaces(input string) []boatRace {
 	boatRaces := []boatRace{}
 	rows := strings.Split(input, "\n")
 
-	
 	distanceRow := strings.TrimPrefix(rows[1], "Distance: ")
-	// Get a list of distance values 
+	// Get a list of distance values
 	distanceFields := strings.Fields(distanceRow)
 
 	timeRow := strings.TrimPrefix(rows[0], "Time: ")
@@ -92,7 +91,7 @@ func getBoatRaces(input string) []boatRace {
 		if err != nil {
 			panic(fmt.Sprintf("Could not parse %s to float", timeRow))
 		}
-		
+
 		distance, err := strconv.ParseFloat(distanceFields[idx], 64)
 		if err != nil {
 			panic(fmt.Sprintf("Could not parse %s to float", timeRow))
@@ -123,6 +122,5 @@ func getBoatRace(input string) boatRace {
 	}
 
 	return boatRace{time: time, distance: distance}
-
 
 }

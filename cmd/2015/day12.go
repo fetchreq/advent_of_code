@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -40,9 +40,9 @@ func day12Part1(input string) int {
 				isNegitive = true
 				i += 1
 			}
-			start := i;
+			start := i
 			for regexp.MustCompile("[0-9]").MatchString(string(input[i])) {
-				i++	
+				i++
 			}
 			if isNegitive {
 				sum -= cast.ToInt(input[start:i])
@@ -56,10 +56,10 @@ func day12Part1(input string) int {
 
 func day12Part2(input string) int {
 	sum := 0
-	
+
 	for i := 0; i < len(input); i++ {
 		curr := string(input[i])
-		
+
 		if curr == "{" {
 			objectStart := i
 			for input[i] != '}' {
@@ -67,25 +67,25 @@ func day12Part2(input string) int {
 			}
 
 			if !regexp.MustCompile("red").MatchString(input[objectStart:i]) {
-				i = objectStart	
+				i = objectStart
 			}
 		}
-		
+
 		if regexp.MustCompile("[0-9]").MatchString(curr) || input[i] == '-' {
 			isNegitive := false
 			if input[i] == '-' {
 				isNegitive = true
 				i += 1
 			}
-			start := i;
+			start := i
 			for regexp.MustCompile("[0-9]").MatchString(string(input[i])) {
-				i++	
+				i++
 			}
 			if isNegitive {
 				sum -= cast.ToInt(input[start:i])
 			} else {
 				sum += cast.ToInt(input[start:i])
-			} 
+			}
 		}
 	}
 	return sum

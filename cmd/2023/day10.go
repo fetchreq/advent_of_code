@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -29,6 +29,7 @@ to quickly create a Cobra application.`,
 		fmt.Printf("Part 2: %d\n", day10Part2(input))
 	},
 }
+
 func init() {
 	cmd.TwentyThreeCmd.AddCommand(day10Cmd)
 }
@@ -38,19 +39,20 @@ type pipe int
 const (
 	Vertical pipe = iota + 1
 	Horizontal
-	NorthToEast	
-	NorthToWest	
+	NorthToEast
+	NorthToWest
 	SouthToEast
 	SouthToWest
 	Ground
 )
 
 type direction int
+
 const (
 	North direction = iota + 1
 	East
 	South
-	West 
+	West
 )
 
 // String - Creating common behavior - give the type a String function
@@ -63,7 +65,6 @@ func (d direction) String() string {
 	return [...]string{"North", "East", "South", "West"}[d-1]
 }
 
-
 func (p pipe) Next(curr Pair) Pair {
 	var next Pair
 	if p == Horizontal {
@@ -72,7 +73,7 @@ func (p pipe) Next(curr Pair) Pair {
 		} else if curr.dir == West {
 			next = Pair{x: curr.x, y: curr.y - 1, dir: curr.dir}
 		} else {
-				panic(fmt.Sprintf("In horizontal going north/south (%d)", curr.dir))
+			panic(fmt.Sprintf("In horizontal going north/south (%d)", curr.dir))
 		}
 	} else if p == Vertical {
 		if curr.dir == North {
@@ -97,7 +98,7 @@ func (p pipe) Next(curr Pair) Pair {
 		if curr.dir == South {
 			next = Pair{x: curr.x, y: curr.y - 1, dir: West}
 		} else if curr.dir == East {
-			next = Pair{x: curr.x -1, y: curr.y, dir: North}
+			next = Pair{x: curr.x - 1, y: curr.y, dir: North}
 		} else {
 			panic(fmt.Sprintf("In North to west with dir (%d)", curr.dir))
 		}
@@ -111,7 +112,7 @@ func (p pipe) Next(curr Pair) Pair {
 		}
 	} else if p == SouthToWest {
 		if curr.dir == North {
-			next = Pair{x: curr.x, y: curr.y -1, dir: West}
+			next = Pair{x: curr.x, y: curr.y - 1, dir: West}
 		} else if curr.dir == East {
 			next = Pair{x: curr.x + 1, y: curr.y, dir: South}
 		} else {
@@ -125,9 +126,8 @@ func (p pipe) Next(curr Pair) Pair {
 }
 
 type Pair struct {
-    x, y int
-    dir direction
-
+	x, y int
+	dir  direction
 }
 
 // EnumIndex - Creating common behavior - give the type a EnumIndex function
@@ -171,7 +171,6 @@ func day10Part1(input string) int {
 		}
 	}
 
-
 	foundLoop := false
 	curr := start
 	steps := 0
@@ -187,12 +186,9 @@ func day10Part1(input string) int {
 		steps++
 	}
 
-
-	return steps / 2;
+	return steps / 2
 }
-
 
 func day10Part2(input string) int {
 	return 0
 }
-

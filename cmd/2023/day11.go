@@ -6,11 +6,10 @@ package twentythree
 import (
 	"fmt"
 	"math"
-	//"math"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -26,37 +25,37 @@ var day11Cmd = &cobra.Command{
 		} else {
 			fmt.Printf("Part 2: %d\n", day11Part2(input))
 		}
-		
+
 	},
 }
+
 func init() {
 	cmd.TwentyThreeCmd.AddCommand(day11Cmd)
 	day11Cmd.PersistentFlags().Bool("part1", false, "")
 }
 
 // a galaxy position is a number: x + y * uw
-var univ []int					
+var univ []int
+
 // the univ dimensions: width and height of its grid. thus usize = uw*uh
 var uw, uh int
-// the list of galaxies in each row and col, as their ID + 1 
-var rows, cols [][]int
 
+// the list of galaxies in each row and col, as their ID + 1
+var rows, cols [][]int
 
 func day11Part1(input string) int {
 	return computeDistances(strings.Split(input, "\n"), 1)
 }
 
-
 func day11Part2(input string) int {
-	return computeDistances(strings.Split(input, "\n"), 1_000_000 - 1)
+	return computeDistances(strings.Split(input, "\n"), 1_000_000-1)
 }
-
 
 func computeDistances(lines []string, expansion int) (sum int) {
 	parse(lines)
 	expandUniv(expansion)
-	for g1 := 0; g1 < len(univ) - 1; g1++ {
-		for g2 := g1+1; g2 < len(univ); g2++ {
+	for g1 := 0; g1 < len(univ)-1; g1++ {
+		for g2 := g1 + 1; g2 < len(univ); g2++ {
 			sum += distance(g1, g2)
 		}
 	}
@@ -119,14 +118,14 @@ func expandUniv(expansion int) {
 		if exp == 0 {
 			continue
 		}
-		for _, gid := range cols[i] { 
+		for _, gid := range cols[i] {
 			tmr[gid] = exp
 		}
 	}
-	
+
 	for gid, pos := range univ {
-		ox := pos%ouw
-		oy := pos/ouw
+		ox := pos % ouw
+		oy := pos / ouw
 		x := ox + tmr[gid]
 		y := oy + tmd[gid]
 		univ[gid] = x + y*uw
@@ -147,4 +146,3 @@ func intAbs(i int) int {
 		return -i
 	}
 }
-

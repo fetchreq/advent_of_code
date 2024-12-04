@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -35,14 +35,14 @@ func day9Part1(input string) int {
 	for idx, row := range strings.Split(input, "\n") {
 		toSolve := []int{}
 		for _, field := range strings.Fields(row) {
-			toSolve = append(toSolve, cast.ToInt(field))	
+			toSolve = append(toSolve, cast.ToInt(field))
 		}
 		next := toSolve[len(toSolve)-1] + solveForNext(toSolve)
 		fmt.Printf("For row %d next value is %d\n", idx, next)
 		sum += next
 	}
 
-	return sum;
+	return sum
 }
 
 func solveForNext(input []int) int {
@@ -50,14 +50,12 @@ func solveForNext(input []int) int {
 		return 0
 	}
 	difference := []int{}
-	for i := 0; i < len(input) - 1; i++ {
+	for i := 0; i < len(input)-1; i++ {
 		diff := input[i+1] - input[i]
 		difference = append(difference, diff)
 	}
 
-	
-
-	return	difference[len(difference) - 1] + solveForNext(difference)
+	return difference[len(difference)-1] + solveForNext(difference)
 }
 
 func solveForPrevious(input []int) int {
@@ -65,16 +63,15 @@ func solveForPrevious(input []int) int {
 		return 0
 	}
 	difference := []int{}
-	for i := 0; i < len(input) - 1; i++ {
+	for i := 0; i < len(input)-1; i++ {
 		diff := input[i] - input[i+1]
 		difference = append(difference, diff)
 	}
 
-	fmt.Printf("Adding %d\n", difference[len(difference) - 1])	
+	fmt.Printf("Adding %d\n", difference[len(difference)-1])
 
-	return	difference[len(difference) - 1] + solveForNext(difference)
+	return difference[len(difference)-1] + solveForNext(difference)
 }
-
 
 func isAllZeros(input []int) bool {
 	for _, item := range input {
@@ -88,24 +85,23 @@ func isAllZeros(input []int) bool {
 
 func day9Part2(input string) int {
 	sum := 0
-	
+
 	for idx, row := range strings.Split(input, "\n") {
 		toSolve := []int{}
-			
+
 		for _, field := range strings.Fields(row) {
-			toSolve = append(toSolve, cast.ToInt(field))	
+			toSolve = append(toSolve, cast.ToInt(field))
 		}
 
-		for i := len(toSolve)/2-1; i >= 0; i-- {
-			opp := len(toSolve)-1-i
+		for i := len(toSolve)/2 - 1; i >= 0; i-- {
+			opp := len(toSolve) - 1 - i
 			toSolve[i], toSolve[opp] = toSolve[opp], toSolve[i]
 		}
 		fmt.Println(toSolve)
-		next := toSolve[len(toSolve) - 1] - solveForPrevious(toSolve)
+		next := toSolve[len(toSolve)-1] - solveForPrevious(toSolve)
 		fmt.Printf("For row %d next value is %d\n", idx, next)
 		sum += next
 	}
 
-	return sum;
+	return sum
 }
-

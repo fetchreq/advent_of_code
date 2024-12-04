@@ -8,9 +8,9 @@ import (
 	"math"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +30,7 @@ func init() {
 	cmd.FifteenCmd.AddCommand(day9Cmd)
 }
 
-type Graph map[string]map[string]int 
+type Graph map[string]map[string]int
 
 func day9Part1(input string) int {
 	graph := make(Graph)
@@ -50,7 +50,6 @@ func day9Part1(input string) int {
 		graph[end][start] = weight
 	}
 
-
 	min := math.MaxInt
 	for k := range graph {
 		fmt.Println(k)
@@ -59,7 +58,7 @@ func day9Part1(input string) int {
 		min = util.Min(min, dfsMin)
 	}
 
-	return  min
+	return min
 }
 func day9Part2(input string) int {
 	graph := make(Graph)
@@ -85,7 +84,7 @@ func day9Part2(input string) int {
 		max = util.Max(max, dfsMax)
 	}
 
-	return  max
+	return max
 }
 
 func distance(graph Graph, entry string, visited map[string]bool) (minDistance int, maxDistance int) {
@@ -109,7 +108,5 @@ func distance(graph Graph, entry string, visited map[string]bool) (minDistance i
 	}
 
 	return minDis, maxDis
-		
+
 }
-
-

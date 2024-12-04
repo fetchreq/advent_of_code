@@ -12,9 +12,9 @@ import (
 	// "strconv"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -27,8 +27,8 @@ var day7Cmd = &cobra.Command{
 		fmt.Println("day7 called")
 		input := util.ReadFile("2015", "day7", false)
 		part1, part2 := day7Part1(input)
-		fmt.Printf("Part 1: %d\n", part1);
-		fmt.Printf("Part 2: %d\n", part2);
+		fmt.Printf("Part 1: %d\n", part1)
+		fmt.Printf("Part 2: %d\n", part2)
 	},
 }
 
@@ -46,9 +46,6 @@ func init() {
 	// day7Cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-
-
- 
 func day7Part1(input string) (int, int) {
 	wireToRule := map[string]string{}
 
@@ -68,7 +65,6 @@ func day7Part1(input string) (int, int) {
 
 	return afirst, aSecond
 }
-
 
 func memoDFS(graph map[string]string, entry string, memo map[string]int) int {
 	if memoVal, ok := memo[entry]; ok {
@@ -103,23 +99,3 @@ func memoDFS(graph map[string]string, entry string, memo map[string]int) int {
 	memo[entry] = result
 	return result
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

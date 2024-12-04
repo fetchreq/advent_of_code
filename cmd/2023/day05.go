@@ -8,9 +8,9 @@ import (
 	"math"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -38,9 +38,9 @@ func init() {
 }
 
 type seedMapValues struct {
-	srcStart int
+	srcStart  int
 	destStart int
-	size int
+	size      int
 }
 
 var order = []string{
@@ -67,7 +67,7 @@ func day5Part1(input string) int {
 			continue
 		}
 
-		mapType, content, _:= strings.Cut(chunk, " map:")
+		mapType, content, _ := strings.Cut(chunk, " map:")
 		var seedMapVals []seedMapValues
 		for _, row := range strings.Split(content, "\n") {
 			if strings.TrimSpace(row) == "" {
@@ -75,31 +75,31 @@ func day5Part1(input string) int {
 			}
 			var src, dest, size int
 			fmt.Sscanf(row, "%d %d %d", &dest, &src, &size)
-			//fmt.Printf("%s: src Start %d - dest Start %d size %d\n", mapType, src, dest ,size) 
+			//fmt.Printf("%s: src Start %d - dest Start %d size %d\n", mapType, src, dest ,size)
 			seedMapVals = append(seedMapVals, seedMapValues{srcStart: src, destStart: dest, size: size})
 		}
 		maps[mapType] = seedMapVals
 	}
-	
+
 	for _, seed := range seeds {
 		curr := seed
 		for _, mapType := range order {
 			for _, seedMapVal := range maps[mapType] {
-				if seedMapVal.srcStart <= curr && curr < seedMapVal.srcStart + seedMapVal.size {
+				if seedMapVal.srcStart <= curr && curr < seedMapVal.srcStart+seedMapVal.size {
 					curr += (seedMapVal.destStart - seedMapVal.srcStart)
 					break
 				}
 			}
 		}
 		if curr < lowest {
-			lowest = curr	
+			lowest = curr
 		}
 	}
-	return lowest;
+	return lowest
 
-} 
+}
 
-type seedRange struct  {
+type seedRange struct {
 	start, size int
 }
 
@@ -111,14 +111,14 @@ func day5Part2(input string) int {
 
 		if idx == 0 {
 			raw := strings.TrimPrefix(chunk, "seeds: ")
-			rawSeeds :=  strings.Split(raw, " ");
-			for i := 0; i < len(rawSeeds) - 1; i+=2 {
+			rawSeeds := strings.Split(raw, " ")
+			for i := 0; i < len(rawSeeds)-1; i += 2 {
 				seeds = append(seeds, seedRange{start: cast.ToInt(rawSeeds[i]), size: cast.ToInt(rawSeeds[i+1])})
 			}
 			continue
 		}
 
-		mapType, content, _:= strings.Cut(chunk, " map:")
+		mapType, content, _ := strings.Cut(chunk, " map:")
 		var seedMapVals []seedMapValues
 		for _, row := range strings.Split(content, "\n") {
 			if strings.TrimSpace(row) == "" {
@@ -134,22 +134,22 @@ func day5Part2(input string) int {
 
 	for _, seedRange := range seeds {
 		//fmt.Printf("Looking at seeds %d to %d\n", seedRange.start, seedRange.start + seedRange.size)
-		for i := seedRange.start; i < seedRange.start + seedRange.size; i++ {
+		for i := seedRange.start; i < seedRange.start+seedRange.size; i++ {
 			curr := i
 			//fmt.Printf("Starting seed %d\n", i)
 			for _, mapType := range order {
 				for _, seedMapVal := range maps[mapType] {
-					if seedMapVal.srcStart <= curr && curr < seedMapVal.srcStart + seedMapVal.size {
+					if seedMapVal.srcStart <= curr && curr < seedMapVal.srcStart+seedMapVal.size {
 						curr += (seedMapVal.destStart - seedMapVal.srcStart)
 						break
 					}
 				}
 			}
 			if curr < lowest {
-				lowest = curr	
+				lowest = curr
 			}
 		}
-	}	
-	return lowest;
+	}
+	return lowest
 
 }

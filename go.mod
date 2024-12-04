@@ -1,4 +1,4 @@
-module github.com/rjprice04/advent_of_code
+module github.com/fetchreq/advent_of_code
 
 go 1.23
 

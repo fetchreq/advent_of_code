@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -39,28 +39,28 @@ func init() {
 	// day3Cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-type location struct{
+type location struct {
 	x int
 	y int
 }
 
 func (l *location) moveNorth() {
-	l.y += 1;
+	l.y += 1
 }
 func (l *location) moveSouth() {
-	l.y -= 1;
+	l.y -= 1
 }
 func (l *location) moveEast() {
-	l.x += 1;
+	l.x += 1
 }
 func (l *location) moveWest() {
-	l.x -= 1;
+	l.x -= 1
 }
 
-func day3Part1(input string) int{
-	moves := strings.Split(input, "");
+func day3Part1(input string) int {
+	moves := strings.Split(input, "")
 	locationSet := make(map[location]bool)
-	current := location{x: 0, y: 0};
+	current := location{x: 0, y: 0}
 
 	locationSet[current] = true
 
@@ -78,23 +78,23 @@ func day3Part1(input string) int{
 		locationSet[current] = true
 	}
 
-	return len(locationSet);
+	return len(locationSet)
 }
 
-func day3Part2(input string) int{
-	moves := strings.Split(input, "");
+func day3Part2(input string) int {
+	moves := strings.Split(input, "")
 	locationSet := make(map[location]bool)
-	santa := location{x: 0, y: 0};
-	roboSanta := location{x: 0, y: 0};
+	santa := location{x: 0, y: 0}
+	roboSanta := location{x: 0, y: 0}
 
-	current := &santa;
+	current := &santa
 	locationSet[*current] = true
 
 	for i, move := range moves {
-		if i % 2 == 0 {
-			current = &santa;
+		if i%2 == 0 {
+			current = &santa
 		} else {
-			current = &roboSanta;
+			current = &roboSanta
 		}
 
 		if move == ">" {
@@ -110,5 +110,5 @@ func day3Part2(input string) int{
 		locationSet[*current] = true
 	}
 
-	return len(locationSet);
+	return len(locationSet)
 }

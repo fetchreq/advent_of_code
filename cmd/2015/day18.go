@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,6 @@ var day18Cmd = &cobra.Command{
 
 		fmt.Printf("Part 1: %d\n", day18Part1(input))
 		fmt.Printf("Part 2: %d\n", day18Part2(input))
-
 
 	},
 }
@@ -41,7 +40,7 @@ func init() {
 }
 
 func day18Part1(input string) int {
-		
+
 	var grid [][]string
 	for _, line := range strings.Split(input, "\n") {
 		grid = append(grid, strings.Split(line, ""))
@@ -50,7 +49,6 @@ func day18Part1(input string) int {
 	for loop := 0; loop < 100; loop++ {
 		grid = next(grid)
 	}
-
 
 	var count int
 	for _, i := range grid {
@@ -62,30 +60,28 @@ func day18Part1(input string) int {
 		}
 		//fmt.Printf("\n")
 	}
-
 
 	return count
 }
 
 func day18Part2(input string) int {
-		
+
 	var grid [][]string
 	for _, line := range strings.Split(input, "\n") {
 		grid = append(grid, strings.Split(line, ""))
 	}
 	grid[0][0] = "#"
-	grid[0][len(grid) - 1] = "#"
-	grid[len(grid) - 1][0] = "#"
-	grid[len(grid) - 1][len(grid) - 1] = "#"
+	grid[0][len(grid)-1] = "#"
+	grid[len(grid)-1][0] = "#"
+	grid[len(grid)-1][len(grid)-1] = "#"
 
 	for loop := 0; loop < 100; loop++ {
 		grid = next(grid)
 		grid[0][0] = "#"
-		grid[0][len(grid) - 1] = "#"
-		grid[len(grid) - 1][0] = "#"
-		grid[len(grid) - 1][len(grid) - 1] = "#"
+		grid[0][len(grid)-1] = "#"
+		grid[len(grid)-1][0] = "#"
+		grid[len(grid)-1][len(grid)-1] = "#"
 	}
-
 
 	var count int
 	for _, i := range grid {
@@ -97,7 +93,6 @@ func day18Part2(input string) int {
 		}
 		//fmt.Printf("\n")
 	}
-
 
 	return count
 }

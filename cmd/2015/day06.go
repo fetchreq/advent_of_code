@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -37,27 +37,28 @@ func init() {
 	// is called directly, e.g.:
 	// day6Cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
+
 type InstructionType int
+
 const (
 	toggle InstructionType = 0
-	turn InstructionType = 1
+	turn   InstructionType = 1
 )
 
 type Instruction struct {
 	instructionType InstructionType
-	isOn bool
-	startX int
-	endX int
-	startY int
-	endY int
+	isOn            bool
+	startX          int
+	endX            int
+	startY          int
+	endY            int
 }
 
-func newInstruction(input string ) Instruction {
+func newInstruction(input string) Instruction {
 	parts := strings.Split(input, " ")
-	if (parts[0] == "turn") {
+	if parts[0] == "turn" {
 		instructionType := turn
-		isOn := parts[1] == "on";
-
+		isOn := parts[1] == "on"
 
 		start := strings.Split(parts[2], ",")
 
@@ -103,16 +104,15 @@ func day6Part1(input string) int {
 			continue
 		}
 
-		instruction := newInstruction(val);
+		instruction := newInstruction(val)
 
-		if (instruction.instructionType == turn) {
+		if instruction.instructionType == turn {
 
 			for i := instruction.startX; i <= instruction.endX; i++ {
 				for j := instruction.startY; j <= instruction.endY; j++ {
 					matrix[i][j] = instruction.isOn
 				}
 			}
-
 
 		} else {
 
@@ -124,17 +124,15 @@ func day6Part1(input string) int {
 
 		}
 
-
 	}
 	onCount := 0
 	for i := 0; i < 1000; i++ {
 		for j := 0; j < 1000; j++ {
 			if matrix[i][j] {
-				onCount += 1;
+				onCount += 1
 			}
 		}
 	}
-
 
 	return onCount
 }
@@ -147,9 +145,9 @@ func day6Part2(input string) int {
 			continue
 		}
 
-		instruction := newInstruction(val);
+		instruction := newInstruction(val)
 
-		if (instruction.instructionType == turn) {
+		if instruction.instructionType == turn {
 
 			for i := instruction.startX; i <= instruction.endX; i++ {
 				for j := instruction.startY; j <= instruction.endY; j++ {
@@ -161,7 +159,6 @@ func day6Part2(input string) int {
 				}
 			}
 
-
 		} else {
 
 			for i := instruction.startX; i <= instruction.endX; i++ {
@@ -172,16 +169,14 @@ func day6Part2(input string) int {
 
 		}
 
-
 	}
 	total := 0
 	for i := 0; i < 1000; i++ {
 		for j := 0; j < 1000; j++ {
-			total += matrix[i][j];
-			
+			total += matrix[i][j]
+
 		}
 	}
-
 
 	return total
 }

@@ -6,8 +6,8 @@ package fifteen
 import (
 	"fmt"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -17,9 +17,9 @@ var day1Cmd = &cobra.Command{
 	Short: "Aoc 2015 Day 1",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		input := util.ReadFile("2015", "1", false);
-		fmt.Printf("Part One: %d\n", part1(input));
-		fmt.Printf("Part Two: %d\n", part2(input));
+		input := util.ReadFile("2015", "1", false)
+		fmt.Printf("Part One: %d\n", part1(input))
+		fmt.Printf("Part Two: %d\n", part2(input))
 	},
 }
 
@@ -32,7 +32,7 @@ func part1(input string) int {
 
 	floor := 0
 
-	for i := range(input) {
+	for i := range input {
 		char := input[i]
 		if char == '(' {
 			floor += 1
@@ -47,7 +47,7 @@ func part2(input string) int {
 
 	floor := 0
 
-	for i := range(input) {
+	for i := range input {
 		char := input[i]
 		if char == '(' {
 			floor += 1
@@ -61,5 +61,5 @@ func part2(input string) int {
 		}
 	}
 
-	return -1; 
+	return -1
 }

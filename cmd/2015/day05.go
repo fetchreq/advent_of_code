@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -18,9 +18,9 @@ var day5Cmd = &cobra.Command{
 	Short: "Aoc 2015 Day 5",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		input := util.ReadFile("2015", "day5", false);
-		fmt.Printf("Part 1: %d\n", day5Part1(input));
-		fmt.Printf("Part 2: %d\n", day5Part2(input));
+		input := util.ReadFile("2015", "day5", false)
+		fmt.Printf("Part 1: %d\n", day5Part1(input))
+		fmt.Printf("Part 2: %d\n", day5Part2(input))
 	},
 }
 
@@ -42,17 +42,15 @@ func day5Part1(input string) int {
 	niceStrings := 0
 	stingList := strings.Split(input, "\n")
 	for _, val := range stingList {
-		if strings.Contains(val, "ab") || strings.Contains(val, "cd")|| strings.Contains(val, "pq") || strings.Contains(val, "xy") {
+		if strings.Contains(val, "ab") || strings.Contains(val, "cd") || strings.Contains(val, "pq") || strings.Contains(val, "xy") {
 			continue
 		}
 
 		if hasThreeVowels(val) && hasRepeatingChars(val) {
-			niceStrings += 1;
+			niceStrings += 1
 		}
 
-
 	}
-				
 
 	return niceStrings
 }
@@ -66,15 +64,14 @@ func day5Part2(input string) int {
 		}
 
 	}
-				
 
 	return niceStrings
 }
 
 func doRuleOneCheck(val string) bool {
-	for i := 0; i < len(val) - 2; i++ {
+	for i := 0; i < len(val)-2; i++ {
 
-		for j := i + 2; j < len(val) - 1; j++ {
+		for j := i + 2; j < len(val)-1; j++ {
 			if val[i] == val[j] && val[i+1] == val[j+1] {
 				return true
 			}
@@ -83,15 +80,14 @@ func doRuleOneCheck(val string) bool {
 	return false
 }
 func doRuleTwoCheck(val string) bool {
-	for i := 0; i < len(val) - 2; i++ {
-		if val[i] == val[i + 2] {
-				return true
-			
+	for i := 0; i < len(val)-2; i++ {
+		if val[i] == val[i+2] {
+			return true
+
 		}
 	}
 	return false
 }
-
 
 func hasThreeVowels(s string) bool {
 	vowelCount := 0
@@ -110,7 +106,7 @@ func hasRepeatingChars(s string) bool {
 	for _, r := range strings.ToLower(s) {
 		if rr == r {
 			return true
-		} 
+		}
 
 		rr = r
 	}

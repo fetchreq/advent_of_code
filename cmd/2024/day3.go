@@ -6,16 +6,16 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
 // day3Cmd represents the day3 command
 var day3Cmd = &cobra.Command{
 	Use:   "day3",
-	Short: "A brief description of your command",
+	Short: "Aoc Day 3 2024",
 	Run: func(cmd *cobra.Command, args []string) {
 		input := util.ReadFile("2024", "3", false)
 		fmt.Printf("Day 3 Part 1 %d\n", day3Part1(input))

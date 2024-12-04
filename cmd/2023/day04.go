@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -74,10 +74,9 @@ func day4Part1(input string) int {
 
 type cardValues struct {
 	winners []int
-	values []int
-	count int
+	values  []int
+	count   int
 }
-
 
 func day4Part2(input string) int {
 	sum := 0
@@ -115,7 +114,7 @@ func day4Part2(input string) int {
 
 func createIntArray(input []string) []int {
 	values := []int{}
-	for _, val := range input{
+	for _, val := range input {
 		if strings.TrimSpace(val) == "" {
 			continue
 		}

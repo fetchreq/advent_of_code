@@ -8,9 +8,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -30,20 +30,20 @@ func init() {
 }
 
 const (
-	RedMax = 12
+	RedMax   = 12
 	GreenMax = 13
-	BlueMax = 14
+	BlueMax  = 14
 )
 
 type game struct {
-	match *regexp.Regexp
-	color string
+	match     *regexp.Regexp
+	color     string
 	maxAmount int
 }
 
 func day2Part1(input string) int {
 	sum := 0
-	colors := [3]game {
+	colors := [3]game{
 		game{color: "red", match: regexp.MustCompile(`(\d+) red`), maxAmount: RedMax},
 		game{color: "green", match: regexp.MustCompile(`(\d+) green`), maxAmount: GreenMax},
 		game{color: "blue", match: regexp.MustCompile(`(\d+) blue`), maxAmount: BlueMax},
@@ -60,7 +60,7 @@ func day2Part1(input string) int {
 		}
 
 		if validGame {
-			sum +=  gameId + 1
+			sum += gameId + 1
 		}
 	}
 	return sum
@@ -68,7 +68,7 @@ func day2Part1(input string) int {
 
 func day2Part2(input string) int {
 	sum := 0
-	colors := [3]game {
+	colors := [3]game{
 		game{color: "red", match: regexp.MustCompile(`(\d+) red`), maxAmount: RedMax},
 		game{color: "green", match: regexp.MustCompile(`(\d+) green`), maxAmount: GreenMax},
 		game{color: "blue", match: regexp.MustCompile(`(\d+) blue`), maxAmount: BlueMax},
@@ -81,12 +81,12 @@ func day2Part2(input string) int {
 		for _, color := range colors {
 			for _, amount := range getMarbleAmounts(color.match, row) {
 				switch color.color {
-				case "red": 
-				 	maxRed = util.Max(amount, maxRed) 
-				case "green": 
-				 	maxGreen = util.Max(amount, maxGreen) 
-				case "blue": 
-				 	maxBlue = util.Max(amount, maxBlue) 
+				case "red":
+					maxRed = util.Max(amount, maxRed)
+				case "green":
+					maxGreen = util.Max(amount, maxGreen)
+				case "blue":
+					maxBlue = util.Max(amount, maxBlue)
 				}
 			}
 		}
@@ -97,7 +97,7 @@ func day2Part2(input string) int {
 
 func getMarbleAmounts(match *regexp.Regexp, input string) []int {
 	amounts := []int{}
-	for _, match := range match.FindAllStringSubmatch(input, -1){
+	for _, match := range match.FindAllStringSubmatch(input, -1) {
 		amounts = append(amounts, cast.ToInt(match[1]))
 	}
 

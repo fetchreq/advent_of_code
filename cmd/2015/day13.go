@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -29,17 +29,16 @@ func init() {
 	cmd.FifteenCmd.AddCommand(day13Cmd)
 }
 
-
 func day13Part1(input string) int {
 
 	personMap := make(Graph)
 
-	for _, line := range strings.Split(input, "\n")	 {
+	for _, line := range strings.Split(input, "\n") {
 		parts := strings.Split(line, " ")
 		// Alice would gain 54 happiness units by sitting next to Bob.
 		personOne := parts[0]
 		amount := cast.ToInt(parts[3])
-		if (parts[2] == "lose") {
+		if parts[2] == "lose" {
 			amount *= -1
 		}
 
@@ -53,29 +52,25 @@ func day13Part1(input string) int {
 			personMap[personTwo] = make(map[string]int)
 		}
 
-		
 		personMap[personOne][personTwo] += amount
 		personMap[personTwo][personOne] += amount
 
 	}
 
-
-	
-
 	dfsMax := maxDistance(personMap, "Alice", map[string]bool{"Alice": true})
-	return  dfsMax
+	return dfsMax
 }
 
 func day13Part2(input string) int {
 
 	personMap := make(Graph)
 
-	for _, line := range strings.Split(input, "\n")	 {
+	for _, line := range strings.Split(input, "\n") {
 		parts := strings.Split(line, " ")
 		// Alice would gain 54 happiness units by sitting next to Bob.
 		personOne := parts[0]
 		amount := cast.ToInt(parts[3])
-		if (parts[2] == "lose") {
+		if parts[2] == "lose" {
 			amount *= -1
 		}
 
@@ -97,17 +92,14 @@ func day13Part2(input string) int {
 		personMap[personOne]["me"] = 0
 		personMap["me"][personTwo] = 0
 		personMap[personTwo]["me"] = 0
-		
+
 		personMap[personOne][personTwo] += amount
 		personMap[personTwo][personOne] += amount
 
 	}
 
-
-	
-
 	dfsMax := maxDistance(personMap, "Alice", map[string]bool{"Alice": true})
-	return  dfsMax
+	return dfsMax
 }
 
 func (g Graph) printGraph() {
@@ -125,7 +117,7 @@ func maxDistance(graph Graph, entry string, visited map[string]bool) int {
 	}
 
 	maxDis := 0
-	
+
 	for k := range graph {
 		if !visited[k] {
 			visited[k] = true
@@ -136,11 +128,8 @@ func maxDistance(graph Graph, entry string, visited map[string]bool) int {
 			delete(visited, k)
 		}
 
-		
 	}
 
 	return maxDis
-		
+
 }
-
-

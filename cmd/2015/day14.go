@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -30,28 +30,28 @@ func init() {
 
 type Reindeer struct {
 	distanceTraveled int
-	startTravelTime int 
-	endTravelTime int
-	speed int
-	travalInterval int
-	resetInterval int
-	resting bool
+	startTravelTime  int
+	endTravelTime    int
+	speed            int
+	travalInterval   int
+	resetInterval    int
+	resting          bool
 }
 
-func newReindeer(parts []string) *Reindeer{
-		// Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds
+func newReindeer(parts []string) *Reindeer {
+	// Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds
 	speed := cast.ToInt(parts[3])
 	travelInterval := cast.ToInt(parts[6])
 	restInterval := cast.ToInt(parts[13])
 
 	return &Reindeer{
 		distanceTraveled: 0,
-		startTravelTime: 0,
-		endTravelTime: travelInterval,
-		speed: speed,
-		travalInterval: travelInterval,
-		resetInterval: restInterval,
-		resting: true,
+		startTravelTime:  0,
+		endTravelTime:    travelInterval,
+		speed:            speed,
+		travalInterval:   travelInterval,
+		resetInterval:    restInterval,
+		resting:          true,
 	}
 }
 
@@ -62,7 +62,7 @@ func (r *Reindeer) updatePosition(name string, currTime int) {
 		r.startTravelTime = r.resetInterval + currTime
 		fmt.Printf(" will start flying again at %d\n", r.startTravelTime)
 		return
-	}  else if r.resting && currTime == r.startTravelTime {
+	} else if r.resting && currTime == r.startTravelTime {
 		fmt.Printf("%s starts flying at %d", name, currTime)
 		r.resting = false
 		r.endTravelTime = r.travalInterval + r.startTravelTime
@@ -84,7 +84,6 @@ func (r Reindeer) printReindeer(name string) {
 	}
 }
 
-
 func day14Part1(input string) int {
 	reindeerMap := make(map[string]*Reindeer)
 	for _, line := range strings.Split(input, "\n") {
@@ -98,13 +97,11 @@ func day14Part1(input string) int {
 			reindeerMap[k].updatePosition(k, i)
 		}
 	}
-	maxDistance := 0;
+	maxDistance := 0
 	for k := range reindeerMap {
-		maxDistance = util.Max(maxDistance, reindeerMap[k].distanceTraveled)	
-		reindeerMap[k].printReindeer(k);
+		maxDistance = util.Max(maxDistance, reindeerMap[k].distanceTraveled)
+		reindeerMap[k].printReindeer(k)
 	}
-
-
 
 	return maxDistance
 

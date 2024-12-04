@@ -9,9 +9,9 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/rjprice04/advent_of_code/cast"
-	"github.com/rjprice04/advent_of_code/cmd"
-	"github.com/rjprice04/advent_of_code/util"
+	"github.com/fetchreq/advent_of_code/cast"
+	"github.com/fetchreq/advent_of_code/cmd"
+	"github.com/fetchreq/advent_of_code/util"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +33,7 @@ func init() {
 func day1Part1(input string) int {
 	sum := 0
 	for _, row := range strings.Split(input, "\n") {
-		sum += getFirstNumberInString(row) * 10 + getFirstNumberInString(reverseString(row))
+		sum += getFirstNumberInString(row)*10 + getFirstNumberInString(reverseString(row))
 	}
 	return sum
 }
@@ -45,8 +45,8 @@ func checkCharIsNumber(c byte) bool {
 func day1Part2(input string) int {
 	sum := 0
 
-	numberStrings:= [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
-	for _, row := range strings.Split(input, "\n"){
+	numberStrings := [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+	for _, row := range strings.Split(input, "\n") {
 		found := false
 		var first int
 		// from beginning of the word
@@ -70,10 +70,10 @@ func day1Part2(input string) int {
 		var last int
 		found = false
 		// from the end of the word
-		for j := len(row) - 1; j >= 0; j-- { 
+		for j := len(row) - 1; j >= 0; j-- {
 			// current is a number
 			if '0' <= row[j] && row[j] <= '9' {
-				last = cast.ToInt(string(row[j]))	
+				last = cast.ToInt(string(row[j]))
 				found = true
 			}
 
@@ -89,7 +89,7 @@ func day1Part2(input string) int {
 				break
 			}
 		}
-		num := first * 10 + last
+		num := first*10 + last
 		sum += num
 	}
 
