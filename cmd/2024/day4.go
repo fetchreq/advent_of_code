@@ -34,67 +34,66 @@ func day4Part1(input string) int {
 		for j := 0; j < len(lines[i]); j++ {
 
 			if lines[i][j] == 'X' {
-				// search backwards
-				if j >= 3 {
-					if lines[i][j-1] == 'M' && lines[i][j-2] == 'A' && lines[i][j-3] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going backwards\n", i, j)
-						count++
-					}
+				if searchLineBackwards(lines[i], j) {
+					count++
 				}
-				// search forwards
-				if j < len(lines[i])-3 {
-					if lines[i][j+1] == 'M' && lines[i][j+2] == 'A' && lines[i][j+3] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going forwards\n", i, j)
-						count++
-					}
+				if searchLineForeward(lines[i], j) {
+					count++
 				}
-				// search up
-				if i >= 3 {
-					if lines[i-1][j] == 'M' && lines[i-2][j] == 'A' && lines[i-3][j] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going upwards\n", i, j)
-						count++
-					}
+				if searchColUpwards(lines, i, j) {
+					count++
 				}
-				// search down
-				if i < len(lines)-3 {
-					if lines[i+1][j] == 'M' && lines[i+2][j] == 'A' && lines[i+3][j] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going downwards\n", i, j)
-						count++
-					}
+				if searchColDownwards(lines, i, j) {
+					count++
 				}
-				// search diagonally up to the right
-				if j >= 3 && i >= 3 {
-					if lines[i-1][j-1] == 'M' && lines[i-2][j-2] == 'A' && lines[i-3][j-3] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going downwards\n", i, j)
-						count++
-					}
+				if searchDiagonallyUpRight(lines, i, j) {
+					count++
 				}
-
-				// search diagonally up to the left
-				if j >= 3 && i < len(lines)-3 {
-					if lines[i+1][j-1] == 'M' && lines[i+2][j-2] == 'A' && lines[i+3][j-3] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going downwards\n", i, j)
-						count++
-					}
+				if searchDiagonallyUpLeft(lines, i, j) {
+					count++
 				}
-				// search diagonally down to the right
-				if j < len(lines[i])-3 && i >= 3 {
-					if lines[i-1][j+1] == 'M' && lines[i-2][j+2] == 'A' && lines[i-3][j+3] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going downwards\n", i, j)
-						count++
-					}
+				if searchDiagonallyDownRight(lines, i, j) {
+					count++
 				}
-				// search diagonally down to the left
-				if j < len(lines[i])-3 && i < len(lines)-3 {
-					if lines[i+1][j+1] == 'M' && lines[i+2][j+2] == 'A' && lines[i+3][j+3] == 'S' {
-						//fmt.Printf("Found XMAS starting at (%d, %d) going downwards\n", i, j)
-						count++
-					}
+				if searchDiagonallyDownLeft(lines, i, j) {
+					count++
 				}
 			}
 		}
 	}
 	return count
+}
+
+func searchLineBackwards(line string, j int) bool {
+	return j >= 3 && line[j-1] == 'M' && line[j-2] == 'A' && line[j-3] == 'S'
+}
+
+func searchLineForeward(line string, j int) bool {
+	return j < len(line)-3 && line[j+1] == 'M' && line[j+2] == 'A' && line[j+3] == 'S'
+}
+
+func searchColUpwards(lines []string, i, j int) bool {
+	return i >= 3 && lines[i-1][j] == 'M' && lines[i-2][j] == 'A' && lines[i-3][j] == 'S'
+}
+
+func searchColDownwards(lines []string, i, j int) bool {
+	return i < len(lines)-3 && lines[i+1][j] == 'M' && lines[i+2][j] == 'A' && lines[i+3][j] == 'S'
+}
+
+func searchDiagonallyUpRight(lines []string, i, j int) bool {
+	return j >= 3 && i >= 3 && lines[i-1][j-1] == 'M' && lines[i-2][j-2] == 'A' && lines[i-3][j-3] == 'S'
+}
+
+func searchDiagonallyUpLeft(lines []string, i, j int) bool {
+	return j >= 3 && i < len(lines)-3 && lines[i+1][j-1] == 'M' && lines[i+2][j-2] == 'A' && lines[i+3][j-3] == 'S'
+}
+
+func searchDiagonallyDownRight(lines []string, i, j int) bool {
+	return j < len(lines[i])-3 && i >= 3 && lines[i-1][j+1] == 'M' && lines[i-2][j+2] == 'A' && lines[i-3][j+3] == 'S'
+}
+
+func searchDiagonallyDownLeft(lines []string, i, j int) bool {
+	return j < len(lines[i])-3 && i < len(lines)-3 && lines[i+1][j+1] == 'M' && lines[i+2][j+2] == 'A' && lines[i+3][j+3] == 'S'
 }
 
 func day4Part2(input string) int {
@@ -107,6 +106,7 @@ func day4Part2(input string) int {
 
 			if lines[i][j] == 'M' {
 				// search diagonally up to the right
+
 				if j >= 2 && i >= 2 {
 					index := fmt.Sprintf("(%d,%d)", i-1, j-1)
 					if lines[i-1][j-1] == 'A' && lines[i-2][j-2] == 'S' {
