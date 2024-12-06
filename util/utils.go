@@ -7,9 +7,18 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/spf13/viper"
 )
+
+func Track(msg string) (string, time.Time) {
+	return msg, time.Now()
+}
+
+func Duration(msg string, start time.Time) {
+	fmt.Printf("%s Duration: %v\n", msg, time.Since(start))
+}
 
 type CardnialDirection int
 

@@ -12,36 +12,41 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// day6Cmd represents the day6 command
 var day6Cmd = &cobra.Command{
 	Use:   "day6",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "AoC 2024 Day 6",
 	Run: func(cmd *cobra.Command, args []string) {
+		defer util.Duration(util.Track("Day 6"))
 		input := util.ReadFile("2024", "6", false)
-		fmt.Println("Day 6 Part 1 = ", day6Part1(input))
-		fmt.Println("Day 6 Part 2 = ", day6Part2(input))
+		puzzle, starting := convertToGrid(input)
+		path := findPath(puzzle, starting)
+		fmt.Println("Day 6 Part 1 = ", day6Part1(path))
+		fmt.Println("Day 6 Part 2 = ", day6Part2(path, puzzle, starting))
+
 	},
 }
 
 func init() {
 	cmd.TwentyFourCmd.AddCommand(day6Cmd)
+
 }
 
 type GridType int
 
 const (
 	OBSTRUCTIONS GridType = iota
-	PATH
 	OPEN
 )
 
-func buildPuzzle(input string) ([][]GridType, Coordinates) {
+type Coordinates struct {
+	X   int
+	Y   int
+	Dir util.CardnialDirection
+}
+
+// Converts the string input into a grid
+// while doing that it also finds the starting point
+func convertToGrid(input string) ([][]GridType, Coordinates) {
 	updates := make([][]GridType, 0)
 	var starting Coordinates
 
@@ -53,22 +58,26 @@ func buildPuzzle(input string) ([][]GridType, Coordinates) {
 		splits := strings.Split(line, "")
 		update := make([]GridType, 0, len(splits))
 		for j, cell := range splits {
-			if cell == "." {
+			switch cell {
+			case ".":
 				update = append(update, OPEN)
-			} else if cell == "#" {
+			case "#":
 				update = append(update, OBSTRUCTIONS)
-			} else if cell == "^" {
-				update = append(update, PATH)
-				starting = Coordinates{x: i, y: j, dir: util.NORTH}
-			} else if cell == ">" {
-				update = append(update, PATH)
-				starting = Coordinates{x: i, y: j, dir: util.EAST}
-			} else if cell == "v" {
-				update = append(update, PATH)
-				starting = Coordinates{x: i, y: j, dir: util.SOUTH}
-			} else if cell == "<" {
-				update = append(update, PATH)
-				starting = Coordinates{x: i, y: j, dir: util.WEST}
+			case "^":
+				update = append(update, OPEN)
+				starting = Coordinates{X: i, Y: j, Dir: util.NORTH}
+			case ">":
+				update = append(update, OPEN)
+				starting = Coordinates{X: i, Y: j, Dir: util.WEST}
+			case "v":
+				update = append(update, OPEN)
+				starting = Coordinates{X: i, Y: j, Dir: util.SOUTH}
+			case "<":
+				update = append(update, OPEN)
+				starting = Coordinates{X: i, Y: j, Dir: util.EAST}
+			default:
+				error := fmt.Sprintf("Unknown gird '%s'", cell)
+				panic(error)
 			}
 		}
 		updates = append(updates, update)
@@ -76,51 +85,48 @@ func buildPuzzle(input string) ([][]GridType, Coordinates) {
 	return updates, starting
 }
 
-func day6Part1(input string) int {
-	puzzle, starting := buildPuzzle(input)
-	path := findPath(starting.x, starting.y, starting.dir, puzzle)
+func day6Part1(path map[Coordinates]struct{}) int {
+	defer util.Duration(util.Track("Part 1"))
 	return len(path)
 }
 
-func findPath(startingX, startingY int, direction util.CardnialDirection, puzzle [][]GridType) map[Coordinates]struct{} {
+func findPath(puzzle [][]GridType, starting Coordinates) map[Coordinates]struct{} {
+	defer util.Duration(util.Track("Find path"))
 	path := map[Coordinates]struct{}{}
 
-	dir := direction
-	x := startingX
-	y := startingY
+	x, y, dir := starting.X, starting.Y, starting.Dir
+
 	for {
+		path[Coordinates{X: x, Y: y}] = struct{}{}
 		switch dir {
 		case util.NORTH:
 			if puzzle[x-1][y] == OBSTRUCTIONS {
 				dir = util.EAST
 			} else {
-				path[Coordinates{x: x, y: y}] = struct{}{}
 				x--
 			}
 		case util.EAST:
 			if puzzle[x][y+1] == OBSTRUCTIONS {
 				dir = util.SOUTH
 			} else {
-				path[Coordinates{x: x, y: y}] = struct{}{}
 				y++
 			}
 		case util.SOUTH:
 			if puzzle[x+1][y] == OBSTRUCTIONS {
 				dir = util.WEST
 			} else {
-				path[Coordinates{x: x, y: y}] = struct{}{}
 				x++
 			}
 		case util.WEST:
 			if puzzle[x][y-1] == OBSTRUCTIONS {
 				dir = util.NORTH
 			} else {
-				path[Coordinates{x: x, y: y}] = struct{}{}
 				y--
 			}
 		}
+
 		if x+1 == len(puzzle) || x == 0 || y+1 == len(puzzle[0]) || y == 0 {
-			path[Coordinates{x: x, y: y}] = struct{}{}
+			path[Coordinates{X: x, Y: y}] = struct{}{}
 			break
 		}
 	}
@@ -130,12 +136,9 @@ func findPath(startingX, startingY int, direction util.CardnialDirection, puzzle
 }
 
 func printPuzzle(puzzle [][]GridType) {
-	count := 1
 	for _, line := range puzzle {
 		for _, cell := range line {
-			if cell == PATH {
-				fmt.Printf("%d ", count)
-			} else if cell == OBSTRUCTIONS {
+			if cell == OBSTRUCTIONS {
 				fmt.Printf("# ")
 			} else if cell == OPEN {
 				fmt.Printf(". ")
@@ -145,76 +148,78 @@ func printPuzzle(puzzle [][]GridType) {
 	}
 
 }
-func hasLoop(puzzle [][]GridType, starting Coordinates) bool {
+func hasLoop(obstructionX, obstructionY int, puzzle [][]GridType, starting Coordinates) bool {
 	path := make(map[Coordinates]struct{})
-	dir := starting.dir
-	x := starting.x
-	y := starting.y
+	x, y, dir := starting.X, starting.Y, starting.Dir
 	for {
 		switch dir {
 		case util.NORTH:
-			if puzzle[x-1][y] == OBSTRUCTIONS {
+			if puzzle[x-1][y] == OBSTRUCTIONS || (x-1 == obstructionX && y == obstructionY) {
 				dir = util.EAST
 			} else {
-				path[Coordinates{x: x, y: y, dir: dir}] = struct{}{}
 				x--
 			}
 		case util.EAST:
-			if puzzle[x][y+1] == OBSTRUCTIONS {
+			if puzzle[x][y+1] == OBSTRUCTIONS || (x == obstructionX && y+1 == obstructionY) {
 				dir = util.SOUTH
 			} else {
-				path[Coordinates{x: x, y: y, dir: dir}] = struct{}{}
 				y++
 			}
 		case util.SOUTH:
-			if puzzle[x+1][y] == OBSTRUCTIONS {
+			if puzzle[x+1][y] == OBSTRUCTIONS || (x+1 == obstructionX && y == obstructionY) {
 				dir = util.WEST
 			} else {
-				path[Coordinates{x: x, y: y, dir: dir}] = struct{}{}
 				x++
 			}
 		case util.WEST:
-			if puzzle[x][y-1] == OBSTRUCTIONS {
+			if puzzle[x][y-1] == OBSTRUCTIONS || (x == obstructionX && y-1 == obstructionY) {
 				dir = util.NORTH
 			} else {
-				path[Coordinates{x: x, y: y, dir: dir}] = struct{}{}
 				y--
 			}
 		}
-
-		if _, ok := path[Coordinates{x: x, y: y, dir: dir}]; !ok {
-			path[Coordinates{x: x, y: y, dir: dir}] = struct{}{}
-
+		// Check if we've already been at a spot going in the dir
+		if _, ok := path[Coordinates{X: x, Y: y, Dir: dir}]; !ok {
+			// Add it to the path if we haven't
+			path[Coordinates{X: x, Y: y, Dir: dir}] = struct{}{}
 		} else {
+			// We've been here before going in the second dir so we're in a loop
 			return true
 		}
-		if x+1 == len(puzzle) || x == 0 || y+1 == len(puzzle[0]) || y == 0 {
-			path[Coordinates{x: x, y: y, dir: dir}] = struct{}{}
-			break
-		}
 
+		// Check if we're go off the map
+		if x+1 == len(puzzle) || x == 0 || y+1 == len(puzzle[0]) || y == 0 {
+			path[Coordinates{X: x, Y: y, Dir: dir}] = struct{}{}
+			return false
+		}
 	}
-	return false
 }
-func day6Part2(input string) int {
-	puzzle, starting := buildPuzzle(input)
-	path := findPath(starting.x, starting.y, starting.dir, puzzle)
+func day6Part2(path map[Coordinates]struct{}, puzzle [][]GridType, starting Coordinates) int {
+	defer util.Duration(util.Track("Part 2"))
 	cycles := 0
-	for step, _ := range path {
-		if step.x == starting.x && step.y == starting.y {
+	c := make(chan bool)
+	for step := range path {
+		if step.X == starting.X && step.Y == starting.Y {
 			continue
 		}
-		puzzle[step.x][step.y] = OBSTRUCTIONS
-		if hasLoop(puzzle, starting) {
+
+		go func() {
+			hasLoop := hasLoop(step.X, step.Y, puzzle, starting)
+			c <- hasLoop
+		}()
+		// // Make the current step on the path an obstacle
+		// // and check the path for a loop
+		// puzzle[step.X][step.Y] = OBSTRUCTIONS
+		// if hasLoop(puzzle, starting) {
+		// 	cycles++
+		// }
+		// // Reset the puzzle
+		// puzzle[step.X][step.Y] = OPEN
+	}
+	for range len(path) - 1 {
+		if <-c {
 			cycles++
 		}
-		puzzle[step.x][step.y] = OPEN
 	}
 	return cycles
-}
-
-type Coordinates struct {
-	x   int
-	y   int
-	dir util.CardnialDirection
 }
