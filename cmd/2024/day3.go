@@ -5,6 +5,8 @@ package cmd
 
 import (
 	"fmt"
+	"regexp"
+	"strings"
 
 	"github.com/fetchreq/advent_of_code/cast"
 	"github.com/fetchreq/advent_of_code/cmd"
@@ -29,38 +31,13 @@ func init() {
 
 func day3Part1(input string) int {
 	sum := 0
-	for i := range len(input) {
-		curr := input[i]
-		if curr == 'm' && input[i+1] == 'u' && input[i+2] == 'l' && input[i+3] == '(' {
-			start := i + 4
-			end := start
-			for isDigit(input[end]) {
-				end++
-			}
+	reg := regexp.MustCompile(`mul\(([0-9]+,[0-9]+)\)`)
+	for _, matches := range reg.FindAllStringSubmatch(input, -1) {
+		num := strings.Split(matches[1], ",")
+		lhs := cast.ToInt(num[0])
+		rhs := cast.ToInt(num[1])
+		sum += lhs * rhs
 
-			if input[end] != ',' {
-				continue
-			}
-
-			strOne := input[start:end]
-
-			start = end + 1
-			end = start
-			for isDigit(input[end]) {
-				end++
-			}
-			strTwo := input[start:end]
-			if len(strOne) > 3 || len(strTwo) > 3 {
-				continue
-			}
-
-			if input[end] == ')' {
-				numOne := cast.ToInt(strOne)
-				numTwo := cast.ToInt(strTwo)
-				sum += numOne * numTwo
-
-			}
-		}
 	}
 	return sum
 }

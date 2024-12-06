@@ -101,10 +101,10 @@ func processReportWithError(report []int) bool {
 	safe := processReport(report)
 	if !safe {
 		for i := range len(report) {
-			ret := make([]int, 0)
-			ret = append(ret, report[:i]...)
-			ret = append(ret, report[util.Min(i+1, len(report)):]...)
-			if processReport(ret) {
+			updated := make([]int, 0)
+			updated = append(updated, report[:i]...)
+			updated = append(updated, report[util.Min(i+1, len(report)):]...)
+			if processReport(updated) {
 				return true
 			}
 		}

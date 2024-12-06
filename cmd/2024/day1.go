@@ -29,7 +29,7 @@ func init() {
 	cmd.TwentyFourCmd.AddCommand(day1Cmd)
 }
 
-func day1Part1(input string) int {
+func getLeftRight(input string) ([]int, []int) {
 	left := []int{}
 	right := []int{}
 	for _, line := range strings.Split(input, "\n") {
@@ -37,6 +37,11 @@ func day1Part1(input string) int {
 		left = append(left, cast.ToInt(parts[0]))
 		right = append(right, cast.ToInt(parts[1]))
 	}
+	return left, right
+}
+
+func day1Part1(input string) int {
+	left, right := getLeftRight(input)
 
 	slices.Sort(left)
 	slices.Sort(right)
@@ -50,24 +55,14 @@ func day1Part1(input string) int {
 
 func day1Part2(input string) int {
 	items := make(map[int]int)
-	left := []int{}
-	for _, line := range strings.Split(input, "\n") {
-		parts := strings.Split(line, "   ")
-		left = append(left, cast.ToInt(parts[0]))
-		right := cast.ToInt(parts[1])
-		if count, ok := items[right]; !ok {
-			items[right] = 1
-		} else {
-			items[right] = count + 1
-		}
+	left, right := getLeftRight(input)
+	for _, val := range right {
+		items[val] += 1
 	}
 
 	sum := 0
 	for _, val := range left {
-		if occ, ok := items[val]; ok {
-
-			sum += (occ * val)
-		}
+		sum += items[val] * val
 	}
 	return sum
 }

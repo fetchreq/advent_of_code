@@ -11,6 +11,15 @@ import (
 	"github.com/spf13/viper"
 )
 
+type CardnialDirection int
+
+const (
+	NORTH CardnialDirection = iota
+	EAST
+	SOUTH
+	WEST
+)
+
 // Reads a file from the input directory
 // The year is the sub year folder
 // day is the input for the day
